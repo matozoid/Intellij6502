@@ -1,0 +1,33 @@
+{
+	tokens=[
+        EOL="regexp:(\r|\n|\r\n)"
+        WHITE_SPACE="regexp:[\ \t\f]"
+        COMMENT="regexp:#[^\r\n]*"
+        STRING="regexp:\"\[^\"\]*"
+        NAME="regexp:%?[a-zA-Z_][a-zA-Z0-9_]*"
+		OPEN_BRACE="{"
+		CLOSE_BRACE="}"
+		COMMA=","
+		BINARY_NUMBER="regexp:%[01]+"
+		NOT_EQUAL="<>"
+		LESS_THAN="<"
+		GREATER_THAN=">"
+		EQUAL="="
+		IMMEDIATE="#"
+		HEX_NUMBER="regexp:\$[0-9a-fA-F]+"
+		NUMBER="regexp:[0-9]+"
+	]
+
+}
+
+start::= section*
+
+section::= (MEMORY|SEGMENTS|FILES|FORMATS|FEATURES|SYMBOLS|ONCE|LOWCODE|STARTUP|ZPSAVE) OPEN_BRACE identifiers CLOSE_BRACE
+
+identifiers::= identifier*
+
+identifier::= NAME ":" attributes ";"
+
+attributes::= attribute (","? attribute)*
+
+attribute::= NAME "="? (HEX_NUMBER|BINARY_NUMBER|NUMBER|STRING|NAME)
