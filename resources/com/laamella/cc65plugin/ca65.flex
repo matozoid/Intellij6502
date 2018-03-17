@@ -22,6 +22,7 @@ COMMENT=";"[^\r\n]*
 STRING="\""[^\"]*"\""
 CONTROL_COMMAND="."[a-zA-Z_][a-zA-Z0-9_]*
 LABEL=("@"?[a-zA-Z_][a-zA-Z0-9_]*)?":"
+LOCAL_LABEL_REFERENCE="@"[a-zA-Z_][a-zA-Z0-9_]*
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 
 %%
@@ -59,6 +60,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 {COMMENT}                           { return Ca65Types.COMMENT; }
 {STRING}                           { return Ca65Types.STRING; }
 {LABEL}                           { return Ca65Types.LABEL; }
+{LOCAL_LABEL_REFERENCE}             {return Ca65Types.LOCAL_LABEL_REFERENCE; }
 {IDENTIFIER}                           { return Ca65Types.IDENTIFIER; }
 {CONTROL_COMMAND}                           { return Ca65Types.CONTROL_COMMAND; }
 .                                                           { return TokenType.BAD_CHARACTER; }
