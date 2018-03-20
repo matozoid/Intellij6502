@@ -5,7 +5,8 @@ Why?
 Because I work in this IDE daily,
 and I'm trying to pick up 6502 assembly but found no plugin for it.
 Oh no!
-At least it should do some highlighting and formatting for assembly files.
+
+At least I want to make it do some highlighting and formatting for assembly files.
 
 Currently there:
 * Reasonably okay syntax hightlighting for .s and .inc files
