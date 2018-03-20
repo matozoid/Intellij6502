@@ -55,7 +55,7 @@ ca65File::= (line? EOL)*
 line ::= (LABEL? (symbol_definition_line | instruction_line | control_command_line)? COMMENT?)
 
 symbol_definition_line ::= IDENTIFIER EQUAL expr
-instruction_line ::=       IDENTIFIER operand?
+instruction_line ::=       MNEMONIC operand?
 control_command_line ::=   CONTROL_COMMAND expressions?
 
 operand::= (
@@ -127,4 +127,5 @@ primary_expr::=
 |   STRING
 |   LOCAL_LABEL_REFERENCE
 | CONTROL_COMMAND
+| MNEMONIC
 )

@@ -16,6 +16,10 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
+MNEMONIC=(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|
+          CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|
+          JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|
+          RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)
 EOL=(\r|\n|\r\n)
 WHITE_SPACE=[\ \t\f]
 COMMENT=";"[^\r\n]*
@@ -59,6 +63,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 [0-9]+                           { return Ca65Types.NUMBER; }
 {COMMENT}                           { return Ca65Types.COMMENT; }
 {STRING}                           { return Ca65Types.STRING; }
+{MNEMONIC}                           { return Ca65Types.MNEMONIC; }
 {LABEL}                           { return Ca65Types.LABEL; }
 {LOCAL_LABEL_REFERENCE}             {return Ca65Types.LOCAL_LABEL_REFERENCE; }
 {IDENTIFIER}                           { return Ca65Types.IDENTIFIER; }

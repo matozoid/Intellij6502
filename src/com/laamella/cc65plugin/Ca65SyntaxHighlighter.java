@@ -38,6 +38,8 @@ public class Ca65SyntaxHighlighter extends SyntaxHighlighterBase {
             createTextAttributesKey("Ca65_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
     public static final TextAttributesKey LABEL =
             createTextAttributesKey("Ca65_LABEL", DefaultLanguageHighlighterColors.LABEL);
+    public static final TextAttributesKey MNEMONIC =
+            createTextAttributesKey("Ca65_MNEMONIC", DefaultLanguageHighlighterColors.IDENTIFIER);
 
     @NotNull
     @Override
@@ -58,6 +60,7 @@ public class Ca65SyntaxHighlighter extends SyntaxHighlighterBase {
         final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
         final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
         final TextAttributesKey[] PARENS_KEYS = new TextAttributesKey[]{PARENS};
+        final TextAttributesKey[] MNEMONIC_KEYS = new TextAttributesKey[]{MNEMONIC};
 
         highlights.put(Ca65Types.OPEN_PAREN, PARENS_KEYS);
         highlights.put(Ca65Types.CLOSE_PAREN, PARENS_KEYS);
@@ -65,6 +68,7 @@ public class Ca65SyntaxHighlighter extends SyntaxHighlighterBase {
         highlights.put(Ca65Types.CLOSE_BRACE, BRACES_KEYS);
         highlights.put(Ca65Types.COMMENT, COMMENT_KEYS);
         highlights.put(Ca65Types.IDENTIFIER, IDENTIFIER_KEYS);
+        highlights.put(Ca65Types.MNEMONIC, MNEMONIC_KEYS);
         highlights.put(Ca65Types.CONTROL_COMMAND, CONTROL_COMMAND_KEYS);
         highlights.put(Ca65Types.COMMA, SEPARATOR_KEYS);
         highlights.put(Ca65Types.EQUAL, SEPARATOR_KEYS);

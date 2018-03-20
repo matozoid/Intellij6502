@@ -24,6 +24,7 @@ public class Ca65ColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Comment", Ca65SyntaxHighlighter.COMMENT),
             new AttributesDescriptor("Label", Ca65SyntaxHighlighter.LABEL),
             new AttributesDescriptor("Command", Ca65SyntaxHighlighter.CONTROL_COMMAND),
+            new AttributesDescriptor("Mnemonic", Ca65SyntaxHighlighter.MNEMONIC),
             new AttributesDescriptor("Bad character", Ca65SyntaxHighlighter.BAD_CHARACTER),
     };
 
