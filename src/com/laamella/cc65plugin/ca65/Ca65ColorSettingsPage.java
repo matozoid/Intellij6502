@@ -1,4 +1,4 @@
-package com.laamella.cc65plugin;
+package com.laamella.cc65plugin.ca65;
 
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;

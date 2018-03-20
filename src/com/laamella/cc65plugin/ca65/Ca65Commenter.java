@@ -1,4 +1,4 @@
-package com.laamella.cc65plugin;
+package com.laamella.cc65plugin.ca65;
 
 import com.intellij.lang.Commenter;
 import org.jetbrains.annotations.Nullable;

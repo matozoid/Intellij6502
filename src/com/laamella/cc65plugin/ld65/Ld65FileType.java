@@ -1,34 +1,36 @@
-package com.laamella.cc65plugin;
+package com.laamella.cc65plugin.ld65;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
+import com.laamella.cc65plugin.ca65.Ca65Icons;
+import com.laamella.cc65plugin.ca65.Ca65Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class Ca65IncludeFileType extends LanguageFileType {
-    public static final Ca65IncludeFileType INSTANCE = new Ca65IncludeFileType();
+public class Ld65FileType extends LanguageFileType {
+    public static final Ld65FileType INSTANCE = new Ld65FileType();
 
-    private Ca65IncludeFileType() {
+    private Ld65FileType() {
         super(Ca65Language.INSTANCE);
     }
 
     @NotNull
     @Override
     public String getName() {
-        return "ca65 include file";
+        return "ld65 configuration file";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "ca65 assembler include file";
+        return "ld65 configuration file";
     }
 
     @NotNull
     @Override
     public String getDefaultExtension() {
-        return "inc";
+        return "cfg";
     }
 
     @Nullable

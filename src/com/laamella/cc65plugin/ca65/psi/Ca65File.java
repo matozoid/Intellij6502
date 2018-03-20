@@ -1,10 +1,10 @@
-package com.laamella.cc65plugin.psi;
+package com.laamella.cc65plugin.ca65.psi;
 
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
-import com.laamella.cc65plugin.Ca65FileType;
-import com.laamella.cc65plugin.Ca65Language;
+import com.laamella.cc65plugin.ca65.Ca65FileType;
+import com.laamella.cc65plugin.ca65.Ca65Language;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

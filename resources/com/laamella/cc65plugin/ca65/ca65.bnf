@@ -1,16 +1,16 @@
 {
-  parserClass="com.laamella.cc65plugin.Ca65Parser"
+  parserClass="com.laamella.cc65plugin.ca65.Ca65Parser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="Ca65"
   psiImplClassSuffix="Impl"
-  psiPackage="com.laamella.cc65plugin.psi"
-  psiImplPackage="com.laamella.cc65plugin.psi.impl"
+  psiPackage="com.laamella.cc65plugin.ca65.psi"
+  psiImplPackage="com.laamella.cc65plugin.ca65.psi.impl"
 
-  elementTypeHolderClass="com.laamella.cc65plugin.psi.Ca65Types"
-  elementTypeClass="com.laamella.cc65plugin.psi.Ca65ElementType"
-  tokenTypeClass="com.laamella.cc65plugin.psi.Ca65TokenType"
+  elementTypeHolderClass="com.laamella.cc65plugin.ca65.psi.Ca65Types"
+  elementTypeClass="com.laamella.cc65plugin.ca65.psi.Ca65ElementType"
+  tokenTypeClass="com.laamella.cc65plugin.ca65.psi.Ca65TokenType"
 
 	tokens=[
         EOL="regexp:(\r|\n|\r\n)"

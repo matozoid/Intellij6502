@@ -1,7 +1,7 @@
-package com.laamella.cc65plugin.psi;
+package com.laamella.cc65plugin.ca65.psi;
 
 import com.intellij.psi.tree.IElementType;
-import com.laamella.cc65plugin.Ca65Language;
+import com.laamella.cc65plugin.ca65.Ca65Language;
 import org.jetbrains.annotations.*;
 
 public class Ca65TokenType extends IElementType {

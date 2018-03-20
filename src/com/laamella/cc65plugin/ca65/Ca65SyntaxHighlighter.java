@@ -1,4 +1,4 @@
-package com.laamella.cc65plugin;
+package com.laamella.cc65plugin.ca65;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
@@ -7,7 +7,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import com.laamella.cc65plugin.psi.Ca65Types;
+import com.laamella.cc65plugin.ca65.psi.Ca65Types;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

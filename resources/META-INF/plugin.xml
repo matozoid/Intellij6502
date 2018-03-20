@@ -1,8 +1,8 @@
 <idea-plugin>
-	<id>com.your.company.unique.plugin.id</id>
-	<name>Plugin display name here</name>
+	<id>com.laamella.cc65plugin</id>
+	<name>cc65 cross compiler plugin</name>
 	<version>1.0</version>
-	<vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+	<vendor email="hexagonaal@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
 	<description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -25,11 +25,14 @@
 	-->
 
 	<extensions defaultExtensionNs="com.intellij">
-		<fileTypeFactory implementation="com.laamella.cc65plugin.Ca65FileTypeFactory"/>
-		<lang.parserDefinition language="ca65" implementationClass="com.laamella.cc65plugin.Ca65ParserDefinition"/>
-		<lang.syntaxHighlighterFactory language="ca65" implementationClass="com.laamella.cc65plugin.Ca65SyntaxHighlighterFactory"/>
-		<colorSettingsPage implementation="com.laamella.cc65plugin.Ca65ColorSettingsPage"/>
-		<lang.commenter language="ca65" implementationClass="com.laamella.cc65plugin.Ca65Commenter"/>
+		<fileTypeFactory implementation="com.laamella.cc65plugin.Cc65FileTypeFactory"/>
+		<lang.parserDefinition language="ca65" implementationClass="com.laamella.cc65plugin.ca65.Ca65ParserDefinition"/>
+		<lang.syntaxHighlighterFactory language="ca65" implementationClass="com.laamella.cc65plugin.ca65.Ca65SyntaxHighlighterFactory"/>
+		<lang.commenter language="ca65" implementationClass="com.laamella.cc65plugin.ca65.Ca65Commenter"/>
+
+		<lang.parserDefinition language="ld65" implementationClass="com.laamella.cc65plugin.ld65.Ld65ParserDefinition"/>
+
+		<colorSettingsPage implementation="com.laamella.cc65plugin.ca65.Ca65ColorSettingsPage"/>
 	</extensions>
 	<actions>
 		<!-- Add your actions here -->

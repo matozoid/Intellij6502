@@ -1,15 +1,24 @@
-package com.laamella.cc65plugin;
+package com.laamella.cc65plugin.ld65;
 
-import com.intellij.lang.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.ParserDefinition;
+import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
-import com.intellij.psi.tree.*;
-import com.laamella.cc65plugin.psi.Ca65File;
-import com.laamella.cc65plugin.psi.Ca65Types;
+import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.TokenType;
+import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.TokenSet;
+import com.laamella.cc65plugin.ca65.Ca65Language;
+import com.laamella.cc65plugin.ca65.Ca65LexerAdapter;
+import com.laamella.cc65plugin.ca65.Ca65Parser;
+import com.laamella.cc65plugin.ca65.psi.Ca65File;
+import com.laamella.cc65plugin.ca65.psi.Ca65Types;
 import org.jetbrains.annotations.NotNull;
 
-public class Ca65ParserDefinition implements ParserDefinition {
+public class Ld65ParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet COMMENTS = TokenSet.create(Ca65Types.COMMENT);
 
