@@ -52,11 +52,13 @@
 
 ca65File::= (line? EOL)*
 
-line ::= (LABEL? (symbol_definition_line | instruction_line | control_command_line)? COMMENT?)
+line ::= ((macro_start | symbol_definition_line | instruction_line | control_command_line | only_a_label_line)? COMMENT?)
 
-symbol_definition_line ::= IDENTIFIER EQUAL expr
-instruction_line ::=       MNEMONIC operand?
-control_command_line ::=   CONTROL_COMMAND expressions?
+symbol_definition_line ::=  LABEL? IDENTIFIER EQUAL expr
+instruction_line ::=        LABEL? MNEMONIC operand?
+control_command_line ::=    LABEL? CONTROL_COMMAND expressions?
+only_a_label_line ::=    LABEL?
+macro_start ::=             '.macro' IDENTIFIER IDENTIFIER (',' IDENTIFIER)*
 
 operand::= (
 	expr COMMA IDENTIFIER |
