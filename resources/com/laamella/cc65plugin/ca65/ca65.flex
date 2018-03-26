@@ -20,11 +20,15 @@ MNEMONIC=(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|
           CLD|CLI|CLV|CMP|CPX|CPY|DEC|DEX|DEY|EOR|INC|INX|INY|JMP|
           JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|
           RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)
+
+CONTROL_COMMAND="."(a16|a8|addr|align|asciiz|assert|autoimport|bss|byte|byt|case|charmap|code|condes|constructor|data|dbyt|debuginfo|defined|define|def|destructor|dword|elseif|else|endenum|endif|endmac|endmacro|endproc|endrep|endrepeat|endscope|endstruct|end|enum|error|exitmacro|exitmac|exportzp|export|faraddr|feature|fileopt|fopt|forceimport|globalzp|global|i16|i8|ifblank|ifconst|ifdef|ifnblank|ifndef|ifnref|ifp02|ifp816|ifpc02|ifpsc02|ifref|if|importzp|import|incbin|include|interruptor|linecont|listbytes|list|localchar|local|macpack|macro|mac|org|out|p02|p816|pagelength|pagelen|pc02|popseg|proc|psc02|pushseg|reloc|repeat|res|rodata|scope|segment|setcpu|smart|struct|sunplus|tag|warning|word|zeropage)
+CONTROL_FUNCTION="."(bankbyte|blank|concat|const|hibyte|hiword|ident|left|lobyte|loword|match|mid|ref|referenced|right|sizeof|strat|sprintf|string|strlen|tcount|xmatch)
+CONSTANT=("*"|"."cpu|"."paramcount|"."time|"."version)
+
 EOL=(\r|\n|\r\n)
 WHITE_SPACE=[\ \t\f]
 COMMENT=";"[^\r\n]*
 STRING="\""[^\"]*"\""
-CONTROL_COMMAND="."[a-zA-Z_][a-zA-Z0-9_]*
 LABEL=("@"?[a-zA-Z_][a-zA-Z0-9_]*)?":"
 LOCAL_LABEL_REFERENCE="@"[a-zA-Z_][a-zA-Z0-9_]*
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
@@ -68,4 +72,6 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 {LOCAL_LABEL_REFERENCE}       {return Ca65Types.LOCAL_LABEL_REFERENCE; }
 {IDENTIFIER}                  { return Ca65Types.IDENTIFIER; }
 {CONTROL_COMMAND}             { return Ca65Types.CONTROL_COMMAND; }
+{CONTROL_FUNCTION}             { return Ca65Types.CONTROL_FUNCTION; }
+{CONSTANT}             { return Ca65Types.CONSTANT; }
 .                             { return TokenType.BAD_CHARACTER; }

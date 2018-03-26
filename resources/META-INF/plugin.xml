@@ -32,6 +32,8 @@
 
 		<lang.parserDefinition language="ld65" implementationClass="com.laamella.cc65plugin.ld65.Ld65ParserDefinition"/>
 
+		<fileEditorProvider implementation="com.laamella.cc65plugin.sprites.SpritesFileEditorProvider"/>
+
 		<colorSettingsPage implementation="com.laamella.cc65plugin.ca65.Ca65ColorSettingsPage"/>
 	</extensions>
 	<actions>

@@ -50,7 +50,7 @@ public class Ca65ColorSettingsPage implements ColorSettingsPage {
                 "    .byte   .strat(text, I) | $80 \n" +
                 "    .endrep \n" +
                 ".endmacro \n" +
-                "            __MAIN = $1000       ; Apple DOS 3.3 binary file 4 byte prefix header \n" +
+                "            __MAIN = $1000       ; Apple DOS 3.3 sprites file 4 byte prefix header \n" +
                 "            .word __MAIN         ; 2 byte BLAOD address \n" +
                 "            .word __END - __MAIN ; 2 byte BLOAD size \n" +
                 "            .org  __MAIN         ; .org must come after header else offsets are wrong \n" +
