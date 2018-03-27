@@ -96,6 +96,18 @@
                           <text value="Cut"/>
                         </properties>
                       </component>
+                      <component id="63e69" class="org.apache.batik.util.gui.resource.JToolbarButton">
+                        <constraints/>
+                        <properties>
+                          <text value="Copy"/>
+                        </properties>
+                      </component>
+                      <component id="bcb68" class="org.apache.batik.util.gui.resource.JToolbarButton">
+                        <constraints/>
+                        <properties>
+                          <text value="Paste"/>
+                        </properties>
+                      </component>
                     </children>
                   </toolbar>
                   <scrollpane id="6f930" binding="spritesScrollpane">
