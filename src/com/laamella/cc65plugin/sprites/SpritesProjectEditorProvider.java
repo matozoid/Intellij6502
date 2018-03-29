@@ -7,16 +7,16 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 
-public class SpritesFileEditorProvider implements FileEditorProvider {
+public class SpritesProjectEditorProvider implements FileEditorProvider {
     @Override
     public boolean accept(@NotNull Project project, @NotNull VirtualFile file) {
-        return file.getFileType() instanceof SpritesFileType;
+        return file.getFileType() instanceof SpritesProjectFileType;
     }
 
     @NotNull
     @Override
     public FileEditor createEditor(@NotNull Project project, @NotNull VirtualFile file) {
-        return new SpritesFileEditor(project, file);
+        return new SpritesProjectEditor(project, file);
     }
 
     @NotNull

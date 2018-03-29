@@ -2,16 +2,14 @@
 	<id>com.laamella.cc65plugin</id>
 	<name>cc65 cross compiler plugin</name>
 	<version>1.0</version>
-	<vendor email="hexagonaal@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
+	<vendor email="hexagonaal@gmail.com" url="http://www.laamella.com">Laamella Gad</vendor>
 
 	<description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+	A plugin for the cc64 cross assembler suite.
     ]]></description>
 
 	<change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+		1.0 First release.
     ]]>
 	</change-notes>
 
@@ -33,14 +31,15 @@
 
 		<lang.parserDefinition language="ld65" implementationClass="com.laamella.cc65plugin.ld65.Ld65ParserDefinition"/>
 
-		<fileEditorProvider implementation="com.laamella.cc65plugin.sprites.SpritesFileEditorProvider"/>
+		<fileEditorProvider implementation="com.laamella.cc65plugin.sprites.SpritesProjectEditorProvider"/>
 
 		<colorSettingsPage implementation="com.laamella.cc65plugin.ca65.Ca65ColorSettingsPage"/>
 	</extensions>
 
 	<actions>
-		<action id="NewSpritesFile" class="com.laamella.cc65plugin.sprites.NewSpritesFileAction"
-		        text="New C64 sprites file">
+		<action id="NewSpritesProject"
+		        class="com.laamella.cc65plugin.sprites.NewSpritesProjectAction"
+		        text="C64 sprites project">
 			<add-to-group group-id="NewGroup" anchor="last"/>
 			<keyboard-shortcut keymap="$default" first-keystroke="ctrl J"/>
 		</action>

@@ -1,13 +1,17 @@
 package com.laamella.cc65plugin.sprites;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.intellij.AppTopics;
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter;
-import com.intellij.openapi.fileEditor.FileEditor;
-import com.intellij.openapi.fileEditor.FileEditorLocation;
-import com.intellij.openapi.fileEditor.FileEditorState;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ui.UIUtil;
+import com.laamella.cc65plugin.sprites.model.SpritesProject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,21 +19,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
+import java.io.*;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
-public class SpritesFileEditor implements FileEditor {
+public class SpritesProjectEditor implements FileEditor {
     private final Project project;
     private final VirtualFile file;
-    private final SpritesFileEditorForm form;
+    private final SpritesProjectEditorForm form;
+    private final SpritesProject spritesProject;
+    private boolean modified = false;
 
-    public SpritesFileEditor(Project project, VirtualFile file) {
+    public SpritesProjectEditor(Project project, VirtualFile file) {
         this.project = project;
         this.file = file;
 
-        form = new SpritesFileEditorForm();
+        form = new SpritesProjectEditorForm();
+        try {
+            byte[] bytes = file.contentsToByteArray();
+            Gson gson = new GsonBuilder().create();
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+                 Reader reader = new InputStreamReader(bais, "utf-8")) {
+                spritesProject = gson.fromJson(reader, SpritesProject.class);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-
+        ApplicationManager.getApplication().getMessageBus().connect().subscribe(AppTopics.FILE_DOCUMENT_SYNC, new FileDocumentManagerAdapter() {
+            @Override
+            public void beforeAllDocumentsSaving() {
+                try {
+                    NewSpritesProjectAction.saveProjectFile(project, spritesProject, new File(file.getPath()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         for (int i = 0; i < 10; i++) {
             BufferedImage image = UIUtil.createImage(48, 50, TYPE_INT_ARGB);
@@ -38,16 +64,13 @@ public class SpritesFileEditor implements FileEditor {
             Graphics g = image.getGraphics();
 
             g.drawString("Point is here", 0, 10);
-            g.drawRect(0,0,47,49);
+            g.drawRect(0, 0, 47, 49);
 
             g.dispose();  // get rid of the Graphics context to save resources
 
-            form.getSpritesContainer().add(new ImageComponent(image));
+            form.getSpritesContainer().add(new SpriteComponent(image));
         }
-
-
     }
-
 
     @NotNull
     @Override
@@ -74,7 +97,7 @@ public class SpritesFileEditor implements FileEditor {
 
     @Override
     public boolean isModified() {
-        return false;
+        return modified;
     }
 
     @Override
@@ -136,11 +159,11 @@ public class SpritesFileEditor implements FileEditor {
         return file;
     }
 
-    public static void main(final String args[]) {
+    public static void main(final String args[]) throws IOException {
         JFrame frame = new JFrame("JToolBar Example");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        SpritesFileEditorForm form = new SpritesFileEditor(null, null).form;
+        SpritesProjectEditorForm form = new SpritesProjectEditor(null, null).form;
         frame.add(form.getRootPanel(), BorderLayout.CENTER);
         form.getSpritesContainer().setLayout(new WrapLayout(FlowLayout.LEFT));
         for (int i = 0; i < 10; i++) {
@@ -150,39 +173,14 @@ public class SpritesFileEditor implements FileEditor {
             Graphics g = image.getGraphics();
 
             g.drawString("Point is here", 0, 10);
-            g.drawRect(0,0,47,49);
+            g.drawRect(0, 0, 47, 49);
 
             g.dispose();  // get rid of the Graphics context to save resources
 
-            form.getSpritesContainer().add(new ImageComponent(image));
+            form.getSpritesContainer().add(new SpriteComponent(image));
         }
         frame.setSize(650, 650);
         frame.setVisible(true);
     }
 }
 
-class ImageComponent extends JComponent {
-
-    private BufferedImage image;
-
-    public ImageComponent(BufferedImage image){
-        this.image = image;
-        Dimension size = new Dimension(image.getWidth(), image.getHeight());
-        setSize(size);
-        setPreferredSize(size);
-        setMinimumSize(size);
-    }
-
-    public void setImage(final BufferedImage image) {
-        this.image = image;
-        repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (image != null)
-            g.drawImage(image, 0, 0, this);
-    }
-
-}

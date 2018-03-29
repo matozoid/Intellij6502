@@ -7,8 +7,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class SpritesFileType extends UserBinaryFileType {
-    public static final SpritesFileType INSTANCE = new SpritesFileType();
+public class SpritesProjectFileType extends UserBinaryFileType {
+    public static final SpritesProjectFileType INSTANCE = new SpritesProjectFileType();
 
     @NotNull
     @Override

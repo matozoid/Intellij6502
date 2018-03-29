@@ -5,7 +5,7 @@ import com.intellij.ui.components.JBViewport;
 import javax.swing.*;
 import java.awt.*;
 
-public class SpritesFileEditorForm {
+public class SpritesProjectEditorForm {
     private JPanel rootPanel;
     private JScrollPane spritesScrollpane;
     private JScrollPane compositionsContainer;

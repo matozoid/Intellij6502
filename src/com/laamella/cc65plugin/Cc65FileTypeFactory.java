@@ -1,7 +1,7 @@
 package com.laamella.cc65plugin;
 
 import com.intellij.openapi.fileTypes.*;
-import com.laamella.cc65plugin.sprites.SpritesFileType;
+import com.laamella.cc65plugin.sprites.SpritesProjectFileType;
 import com.laamella.cc65plugin.ca65.Ca65FileType;
 import com.laamella.cc65plugin.ca65.Ca65IncludeFileType;
 import com.laamella.cc65plugin.ld65.Ld65FileType;
@@ -13,6 +13,6 @@ public class Cc65FileTypeFactory extends FileTypeFactory {
         fileTypeConsumer.consume(Ca65FileType.INSTANCE);
         fileTypeConsumer.consume(Ca65IncludeFileType.INSTANCE);
         fileTypeConsumer.consume(Ld65FileType.INSTANCE);
-        fileTypeConsumer.consume(SpritesFileType.INSTANCE);
+        fileTypeConsumer.consume(SpritesProjectFileType.INSTANCE);
     }
 }
