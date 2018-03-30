@@ -1,0 +1,135 @@
+{
+  parserClass="com.laamella.intellij6502.asm.Ca65Parser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Assembly"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.laamella.intellij6502.asm.psi"
+  psiImplPackage="com.laamella.intellij6502.asm.psi.impl"
+
+  elementTypeHolderClass="com.laamella.intellij6502.asm.psi.AssemblyTypes"
+  elementTypeClass="com.laamella.intellij6502.asm.psi.AssemblyElementType"
+  tokenTypeClass="com.laamella.intellij6502.asm.psi.AssemblyTokenType"
+
+	tokens=[
+        EOL="regexp:(\r|\n|\r\n)"
+        WHITE_SPACE="regexp:[\ \t\f]"
+        COMMENT="regexp:;[^\r\n]*"
+        STRING="regexp:\"\[^\"\]*"
+        CONTROL_COMMAND="regexp:\.[a-zA-Z_][a-zA-Z0-9_]*"
+        LABEL="regexp:(@?[a-zA-Z_][a-zA-Z0-9_]*)?:"
+        NAME="regexp:[a-zA-Z_][a-zA-Z0-9_]*"
+		OPEN_PAREN="("
+		CLOSE_PAREN=")"
+		COMMA=","
+		MINUS="-"
+		PLUS="+"
+		TIMES="*"
+		MODULO="%"
+		DIV="/"
+		TILDE="~"
+		DAKJE="^"
+		PIPE="|"
+		BINARY_NUMBER="regexp:%[01]+"
+		NOT_EQUAL="<>"
+		LESS_EQUAL="<="
+		GREATER_EQUAL=">="
+		LESS_THAN="<"
+		GREATER_THAN=">"
+		SHIFT_LEFT="<<"
+		SHIFT_RIGHT=">>"
+		EQUAL="="
+		IMMEDIATE="#"
+		AND="&"
+		BOOLEAN_AND="&&"
+		BOOLEAN_OR="||"
+		BOOLEAN_NOT="!"
+		HEX_NUMBER="regexp:\$[0-9a-fA-F]+"
+		NUMBER="regexp:[0-9]+"
+	]
+	 extends(".*expr")=expr
+}
+
+ca65File::= (line? EOL)*
+
+line ::= ((macro_start | symbol_definition_line | instruction_line | control_command_line | only_a_label_line)? COMMENT?)
+
+symbol_definition_line ::=  LABEL? (IDENTIFIER|'*') EQUAL expr
+instruction_line ::=        LABEL? MNEMONIC operand?
+control_command_line ::=    LABEL? CONTROL_COMMAND expressions?
+only_a_label_line ::=    LABEL?
+macro_start ::=             '.macro' IDENTIFIER IDENTIFIER (',' IDENTIFIER)*
+
+operand::= (
+	expr COMMA IDENTIFIER |
+	IMMEDIATE? expr |
+	OPEN_PAREN IMMEDIATE? expr CLOSE_PAREN |
+	OPEN_PAREN IMMEDIATE? expr CLOSE_PAREN COMMA IDENTIFIER |
+	OPEN_PAREN IMMEDIATE? expr COMMA IDENTIFIER CLOSE_PAREN
+)
+
+expressions::=expr (',' expr)*
+
+
+expr ::=  add_group
+  | mul_group
+  | unary_group
+  | equality_group
+  | boolean_group
+  | primary_group
+
+// private rules to define operators with the same priority
+private unary_group ::= unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
+private mul_group ::= mul_expr | div_expr | mod_expr | bit_and_expr | bit_xor_expr|shift_left_expr|shift_right_expr
+private add_group ::= plus_expr | minus_expr | bit_or_expr
+private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
+private boolean_group ::= boolean_and_expr|boolean_not_expr|boolean_or_expr
+private primary_group ::= paren_expr | param_expr | primary_expr
+
+// public rules for each expression
+unary_min_expr ::= '-' expr
+unary_plus_expr ::= '+' expr
+bit_not_expr ::= '~' expr
+lo_byte_expr ::= '<' expr
+hi_byte_expr ::= '>' expr
+bank_byte_expr ::= '^' expr
+
+div_expr ::= expr '/' expr
+mul_expr ::= expr '*' expr
+mod_expr ::= expr '%' expr
+bit_and_expr ::= expr '&' expr
+bit_xor_expr ::= expr '^' expr
+shift_left_expr ::= expr '<<' expr
+shift_right_expr ::= expr '>>' expr
+
+minus_expr ::= expr '-' expr
+plus_expr ::= expr '+' expr
+bit_or_expr ::= expr '|' expr
+
+equal_expr ::= expr '=' expr
+not_equal_expr ::= expr '<>' expr
+less_than_expr ::= expr '<' expr
+greater_than_expr ::= expr '>' expr
+less_equal_expr ::= expr '<=' expr
+greater_equal_expr ::= expr '>=' expr
+
+boolean_and_expr ::= expr '&&' expr
+boolean_or_expr ::= expr '||' expr
+boolean_not_expr ::= expr '!' expr
+
+paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
+param_expr ::= OPEN_BRACE expr CLOSE_BRACE
+
+primary_expr::=
+(   HEX_NUMBER
+|   NUMBER
+|   BINARY_NUMBER
+|   IDENTIFIER
+|   STRING
+|   LOCAL_LABEL_REFERENCE
+| CONTROL_COMMAND
+| FUNCTION
+| MNEMONIC
+| TYPE
+)

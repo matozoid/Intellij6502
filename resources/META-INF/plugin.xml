@@ -1,11 +1,11 @@
 <idea-plugin>
-	<id>com.laamella.cc65plugin</id>
-	<name>cc65 cross compiler plugin</name>
+	<id>com.laamella.intellij6502</id>
+	<name>6502 assembly plugin</name>
 	<version>1.0</version>
 	<vendor email="hexagonaal@gmail.com" url="http://www.laamella.com">Laamella Gad</vendor>
 
 	<description><![CDATA[
-	A plugin for the cc64 cross assembler suite.
+
     ]]></description>
 
 	<change-notes><![CDATA[
@@ -23,22 +23,20 @@
 	-->
 
 	<extensions defaultExtensionNs="com.intellij">
-		<fileTypeFactory implementation="com.laamella.cc65plugin.Cc65FileTypeFactory"/>
-		<lang.parserDefinition language="ca65" implementationClass="com.laamella.cc65plugin.ca65.Ca65ParserDefinition"/>
-		<lang.syntaxHighlighterFactory language="ca65"
-		                               implementationClass="com.laamella.cc65plugin.ca65.Ca65SyntaxHighlighterFactory"/>
-		<lang.commenter language="ca65" implementationClass="com.laamella.cc65plugin.ca65.Ca65Commenter"/>
+		<fileTypeFactory implementation="com.laamella.intellij6502.Intellij6502FileTypeFactory"/>
+		<lang.parserDefinition language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyParserDefinition"/>
+		<lang.syntaxHighlighterFactory language="asm"
+		                               implementationClass="com.laamella.intellij6502.asm.AssemblySyntaxHighlighterFactory"/>
+		<lang.commenter language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyCommenter"/>
 
-		<lang.parserDefinition language="ld65" implementationClass="com.laamella.cc65plugin.ld65.Ld65ParserDefinition"/>
+		<fileEditorProvider implementation="com.laamella.intellij6502.sprites.SpritesProjectEditorProvider"/>
 
-		<fileEditorProvider implementation="com.laamella.cc65plugin.sprites.SpritesProjectEditorProvider"/>
-
-		<colorSettingsPage implementation="com.laamella.cc65plugin.ca65.Ca65ColorSettingsPage"/>
+		<colorSettingsPage implementation="com.laamella.intellij6502.asm.AssemblyColorSettingsPage"/>
 	</extensions>
 
 	<actions>
 		<action id="NewSpritesProject"
-		        class="com.laamella.cc65plugin.sprites.NewSpritesProjectAction"
+		        class="com.laamella.intellij6502.sprites.NewSpritesProjectAction"
 		        text="C64 sprites project">
 			<add-to-group group-id="NewGroup" anchor="last"/>
 			<keyboard-shortcut keymap="$default" first-keystroke="ctrl J"/>

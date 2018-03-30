@@ -1,0 +1,123 @@
+{
+  parserClass="com.laamella.intellij6502.basic.BasicParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Basic"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.laamella.intellij6502.basic.psi"
+  psiImplPackage="com.laamella.intellij6502.basic.psi.impl"
+
+  elementTypeHolderClass="com.laamella.intellij6502.basic.psi.Ca65Types"
+  elementTypeClass="com.laamella.intellij6502.basic.psi.AssemblyElementType"
+  tokenTypeClass="com.laamella.intellij6502.basic.psi.AssemblyTokenType"
+
+	tokens=[
+        EOL="regexp:(\r|\n|\r\n)"
+        WHITE_SPACE="regexp:[\ \t\f]"
+        STRING="regexp:\"\[^\"\]*\""
+        NAME="regexp:[a-zA-Z][a-zA-Z0-9]*"
+		NUMBER="regexp:[0-9]+"
+		OPEN_PAREN="("
+		CLOSE_PAREN=")"
+		COMMA=","
+		MINUS="-"
+		PLUS="+"
+		TIMES="*"
+		DIV="/"
+		NOT_EQUAL="<>"
+		LESS_EQUAL="<="
+		GREATER_EQUAL=">="
+		LESS_THAN="<"
+		GREATER_THAN=">"
+		EQUAL="="
+	]
+	 extends(".*expr")=expr
+}
+
+basFile::= (line? EOL)*
+
+line ::= NUMBER statement (":" statement)*
+
+statement ::=(
+	CLOSE expr
+|   CLR
+|   CMD
+|CONT
+|DATA expressions
+|DEF expr
+|DIM expr
+|END
+|FOR expr
+|GET expr
+|"GET#" expr
+|GOSUB expr
+|GOTO expr
+|IF expr
+|INPUT expr
+|"INPUT#"
+|LET expr "=" expr
+|expr "=" expr
+|LIST expr
+|LOAD expr
+|NEW
+|NEXT expr?
+|OPEN expr
+|POKE expr "," expr
+|PRINT expr
+|"PRINT#"
+|READ expr
+|REM expr
+|RESTORE
+|RETURN
+|RUN expr
+|SAVE expr
+|STOP
+|SYS expr
+|VERIFY
+|WAIT
+)
+expressions::=expr (',' expr)*
+
+
+expr ::=  add_group
+  | mul_group
+  | unary_group
+  | equality_group
+  | boolean_group
+  | primary_group
+
+private unary_group ::= unary_plus_expr | unary_min_expr | bit_not_expr
+private mul_group ::= mul_expr | div_expr
+private add_group ::= plus_expr | minus_expr
+private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
+private boolean_group ::= boolean_and_expr|boolean_or_expr
+private primary_group ::= paren_expr | primary_expr
+
+// public rules for each expression
+unary_min_expr ::= '-' expr
+unary_plus_expr ::= '+' expr
+bit_not_expr ::= "NOT" expr
+
+div_expr ::= expr '/' expr
+mul_expr ::= expr '*' expr
+
+minus_expr ::= expr '-' expr
+plus_expr ::= expr '+' expr
+
+equal_expr ::= expr '=' expr
+not_equal_expr ::= expr '<>' expr
+less_than_expr ::= expr '<' expr
+greater_than_expr ::= expr '>' expr
+less_equal_expr ::= expr '<=' expr
+greater_equal_expr ::= expr '>=' expr
+
+boolean_and_expr ::= expr 'AND' expr
+boolean_or_expr ::= expr 'OR' expr
+
+paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
+
+primary_expr::=
+(   NUMBER
+|   STRING
+)

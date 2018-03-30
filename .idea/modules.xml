@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/cc65plugin.iml" filepath="$PROJECT_DIR$/cc65plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Intellij6502.iml" filepath="$PROJECT_DIR$/Intellij6502.iml" />
     </modules>
   </component>
 </project>
