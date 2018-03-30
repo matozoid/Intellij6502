@@ -1,5 +1,5 @@
-# IntellijCc65Plugin
-An Intellij IDEA plugin to support the CC65 cross assembler.
+# Intellij6502
+An Intellij IDEA plugin to support 6502 assembly programming.
 
 Why?
 Because I work in this IDE daily,
@@ -12,7 +12,7 @@ Currently there:
 * Reasonably okay syntax hightlighting for .s and .inc files
 
 Not there:
-* [All of this](https://github.com/matozoid/IntellijCc65Plugin/issues)
+* [All of this](https://github.com/matozoid/Intellij6502/issues)
 
 Really, it's the result of going through half of [this documentation](http://www.jetbrains.org/intellij/sdk/docs/tutorials/custom_language_support_tutorial.html)
 and messing with the grammar until it worked reasonably well.
