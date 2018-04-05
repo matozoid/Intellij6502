@@ -9,7 +9,7 @@ Oh no!
 At least I want to make it do some highlighting and formatting for assembly files.
 
 Currently there:
-* Reasonably okay syntax hightlighting for .s and .inc files
+* Reasonably okay syntax hightlighting for 64tass .asm files
 
 Not there:
 * [All of this](https://github.com/matozoid/Intellij6502/issues)

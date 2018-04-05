@@ -21,8 +21,11 @@ MNEMONIC=(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|
           JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|
           RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)
 
-CONTROL_COMMAND="."(addr|al|align|as|assert|autsiz|bend|binary|binclude|block|break|byte|case|cdef|cerror|char|check|comment|continue|cpu|cwarn|databank|default|dint|dpage|dsection|dstruct|dunion|dword|edef|else|elsif|enc|end|endc|endf|endif|endm|endn|endp|ends|endswitch|endu|endweak|eor|error|fi|fill|for|function|goto|here|hidemac|if|ifeq|ifmi|ifne|ifpl|include|lbl|lint|logical|long|macro|mansiz|namespace|next|null|offs|option|page|pend|proc|proff|pron|ptext|rept|rta|section|seed|segment|send|shift|shiftl|showmac|sint|struct|switch|text|union|var|warn|weak|word|xl|xs)
-FUNCTION=(abs|acos|all|any|asin|atan|atan2|cbrt|ceil|cos|cosh|deg|exp|floor|format|frac|hypot|len|log|log10|pow|rad|random|range|repr|round|sign|sin|sinh|size|sort|sqrt|tan|tanh|trunc)
+CONTROL_COMMAND="."(addr|al|align|as|assert|autsiz|bend|binary|binclude|block|break|byte|case|cdef|cerror|char|check|continue|cpu|cwarn|databank|default|dint|dpage|dsection|dstruct|dunion|dword|edef|else|elsif|enc|end|endf|endif|endm|endn|endp|ends|endswitch|endu|endweak|eor|error|fi|fill|for|function|goto|here|hidemac|if|ifeq|ifmi|ifne|ifpl|include|lbl|lint|logical|long|macro|mansiz|namespace|next|null|offs|option|page|pend|proc|proff|pron|ptext|rept|rta|section|seed|segment|send|shift|shiftl|showmac|sint|struct|switch|text|union|var|warn|weak|word|xl|xs)
+USER_COMMAND=("."|"#")[a-zA-Z_][a-zA-Z0-9_]*
+FUNCTION=(abs|acos|all|any|asin|atan|atan2|cbrt|ceil|cos|cosh|deg|exp|floor
+//|format
+|frac|hypot|len|log|log10|pow|rad|random|range|repr|round|sign|sin|sinh|size|sort|sqrt|tan|tanh|trunc)
 TYPE=(address|bits|bool|bytes|code|dict|float|gap|int|list|str|tuple|type)
 EOL=(\r|\n|\r\n)
 WHITE_SPACE=[\ \t\f]
@@ -30,10 +33,16 @@ COMMENT=";"[^\r\n]*
 STRING="\""[^\"]*"\""
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 
+%x BLOCK_COMMENT
 %%
 
-
+".comment"            { yybegin(BLOCK_COMMENT); return AssemblyTypes.COMMENT; }
+<BLOCK_COMMENT>".endc" { yybegin(YYINITIAL); return AssemblyTypes.COMMENT; }
+<BLOCK_COMMENT>\n   { return AssemblyTypes.COMMENT; }
+<BLOCK_COMMENT>.    { return AssemblyTypes.COMMENT; }
+"format"                        {return AssemblyTypes.FORMAT; }
 ^([a-zA-Z_][a-zA-Z0-9_]*:?|"+"|"-") {return AssemblyTypes.LABEL; }
+"\\"[a-zA-Z_][a-zA-Z0-9_]*      { return AssemblyTypes.PARAMETER_USAGE; }
 {EOL}                         { return AssemblyTypes.EOL; }
 ({WHITE_SPACE})+              { return TokenType.WHITE_SPACE; }
 "("                           { return AssemblyTypes.OPEN_PAREN; }
@@ -71,5 +80,6 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 {TYPE}                        { return AssemblyTypes.TYPE; }
 {IDENTIFIER}                  { return AssemblyTypes.IDENTIFIER; }
 {CONTROL_COMMAND}             { return AssemblyTypes.CONTROL_COMMAND; }
+{USER_COMMAND}             { return AssemblyTypes.USER_COMMAND; }
 {FUNCTION}                    { return AssemblyTypes.FUNCTION; }
 .                             { return TokenType.BAD_CHARACTER; }

@@ -53,13 +53,14 @@
 
 ca65File::= (line? EOL)*
 
-line ::= ((macro_start | symbol_definition_line | instruction_line | control_command_line | only_a_label_line)? COMMENT?)
+label_ref::=(IDENTIFIER|PLUS|MINUS)
+
+line ::= ((symbol_definition_line | instruction_line | control_command_line | only_a_label_line)? COMMENT?)
 
 symbol_definition_line ::=  LABEL? (IDENTIFIER|'*') EQUAL expr
 instruction_line ::=        LABEL? MNEMONIC operand?
-control_command_line ::=    LABEL? CONTROL_COMMAND expressions?
-only_a_label_line ::=    LABEL?
-macro_start ::=             '.macro' IDENTIFIER IDENTIFIER (',' IDENTIFIER)*
+control_command_line ::=    LABEL? (CONTROL_COMMAND|USER_COMMAND) expressions?
+only_a_label_line ::=       LABEL?
 
 operand::= (
 	expr COMMA IDENTIFIER |
@@ -85,7 +86,7 @@ private mul_group ::= mul_expr | div_expr | mod_expr | bit_and_expr | bit_xor_ex
 private add_group ::= plus_expr | minus_expr | bit_or_expr
 private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
 private boolean_group ::= boolean_and_expr|boolean_not_expr|boolean_or_expr
-private primary_group ::= paren_expr | param_expr | primary_expr
+private primary_group ::= function_call_expr | paren_expr | param_expr | primary_expr
 
 // public rules for each expression
 unary_min_expr ::= '-' expr
@@ -127,9 +128,53 @@ primary_expr::=
 |   BINARY_NUMBER
 |   IDENTIFIER
 |   STRING
-|   LOCAL_LABEL_REFERENCE
+|   label_ref
 | CONTROL_COMMAND
-| FUNCTION
+| USER_COMMAND
+| PARAMETER_USAGE
 | MNEMONIC
 | TYPE
+| FUNCTION
+)
+
+function_call_expr ::= (
+//  'floor' OPEN_PAREN expr CLOSE_PAREN
+//| 'round' OPEN_PAREN expr CLOSE_PAREN
+//| 'ceil' OPEN_PAREN expr CLOSE_PAREN
+//| 'trunc' OPEN_PAREN expr CLOSE_PAREN
+//| 'frac' OPEN_PAREN expr CLOSE_PAREN
+//| 'sqrt' OPEN_PAREN expr CLOSE_PAREN
+//| 'cbrt' OPEN_PAREN expr CLOSE_PAREN
+//| 'log10' OPEN_PAREN expr CLOSE_PAREN
+//| 'log' OPEN_PAREN expr CLOSE_PAREN
+//| 'exp' OPEN_PAREN expr CLOSE_PAREN
+//| 'pow' OPEN_PAREN expr COMMA expr CLOSE_PAREN
+//| 'sin' OPEN_PAREN expr CLOSE_PAREN
+//| 'asin' OPEN_PAREN expr CLOSE_PAREN
+//| 'sinh' OPEN_PAREN expr CLOSE_PAREN
+//| 'cos' OPEN_PAREN expr CLOSE_PAREN
+//| 'acos' OPEN_PAREN expr CLOSE_PAREN
+//| 'cosh' OPEN_PAREN expr CLOSE_PAREN
+//| 'tan' OPEN_PAREN expr CLOSE_PAREN
+//| 'atan' OPEN_PAREN expr CLOSE_PAREN
+//| 'tanh' OPEN_PAREN expr CLOSE_PAREN
+//| 'rad' OPEN_PAREN expr CLOSE_PAREN
+//| 'deg' OPEN_PAREN expr CLOSE_PAREN
+//| 'hypot' OPEN_PAREN expr COMMA expr CLOSE_PAREN
+//| 'atan2' OPEN_PAREN expr COMMA expr CLOSE_PAREN
+//| 'abc' OPEN_PAREN expr CLOSE_PAREN
+//| 'sign' OPEN_PAREN expr CLOSE_PAREN
+//
+//| 'all' OPEN_PAREN expr CLOSE_PAREN
+//| 'any' OPEN_PAREN expr CLOSE_PAREN
+
+ FORMAT OPEN_PAREN STRING COMMA expr (COMMA expr)* CLOSE_PAREN
+//| 'len' OPEN_PAREN expr CLOSE_PAREN
+//| 'random' OPEN_PAREN expr (COMMA expr)* CLOSE_PAREN
+//| 'range' OPEN_PAREN expr (COMMA expr)* CLOSE_PAREN
+//| 'repr' OPEN_PAREN expr CLOSE_PAREN
+//| 'size' OPEN_PAREN expr CLOSE_PAREN
+// Should be list, not expr
+//| 'sort' OPEN_PAREN expr CLOSE_PAREN
+
 )

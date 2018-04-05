@@ -13,13 +13,13 @@ public class AssemblyCommenter implements Commenter {
     @Nullable
     @Override
     public String getBlockCommentPrefix() {
-        return "";
+        return ".comment";
     }
 
     @Nullable
     @Override
     public String getBlockCommentSuffix() {
-        return null;
+        return ".endc";
     }
 
     @Nullable
