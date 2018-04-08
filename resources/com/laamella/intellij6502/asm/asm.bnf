@@ -12,42 +12,6 @@
   elementTypeClass="com.laamella.intellij6502.asm.psi.AssemblyElementType"
   tokenTypeClass="com.laamella.intellij6502.asm.psi.AssemblyTokenType"
 
-	tokens=[
-        EOL="regexp:(\r|\n|\r\n)"
-        WHITE_SPACE="regexp:[\ \t\f]"
-        COMMENT="regexp:;[^\r\n]*"
-        STRING="regexp:\"\[^\"\]*"
-        CONTROL_COMMAND="regexp:\.[a-zA-Z_][a-zA-Z0-9_]*"
-        LABEL="regexp:(@?[a-zA-Z_][a-zA-Z0-9_]*)?:"
-        NAME="regexp:[a-zA-Z_][a-zA-Z0-9_]*"
-		OPEN_PAREN="("
-		CLOSE_PAREN=")"
-		COMMA=","
-		MINUS="-"
-		PLUS="+"
-		TIMES="*"
-		MODULO="%"
-		DIV="/"
-		TILDE="~"
-		DAKJE="^"
-		PIPE="|"
-		BINARY_NUMBER="regexp:%[01]+"
-		NOT_EQUAL="<>"
-		LESS_EQUAL="<="
-		GREATER_EQUAL=">="
-		LESS_THAN="<"
-		GREATER_THAN=">"
-		SHIFT_LEFT="<<"
-		SHIFT_RIGHT=">>"
-		EQUAL="="
-		IMMEDIATE="#"
-		AND="&"
-		BOOLEAN_AND="&&"
-		BOOLEAN_OR="||"
-		BOOLEAN_NOT="!"
-		HEX_NUMBER="regexp:\$[0-9a-fA-F]+"
-		NUMBER="regexp:[0-9]+"
-	]
 	 extends(".*expr")=expr
 }
 
@@ -55,23 +19,128 @@ ca65File::= (line? EOL)*
 
 label_ref::=(IDENTIFIER|PLUS|MINUS)
 
-line ::= ((symbol_definition_line | instruction_line | control_command_line | only_a_label_line)? COMMENT?)
+line ::= ((
+	symbol_definition_line |
+	instruction_line |
+	control_command_line |
+	user_command_line |
+	only_a_label_line)?
+	COMMENT?)
 
-symbol_definition_line ::=  LABEL? (IDENTIFIER|'*') EQUAL expr
+symbol_definition_line ::=  ( LABEL? (IDENTIFIER|'*') EQUAL expr
+							| LABEL EQUAL expr )
 instruction_line ::=        LABEL? MNEMONIC operand?
-control_command_line ::=    LABEL? (CONTROL_COMMAND|USER_COMMAND) expressions?
-only_a_label_line ::=       LABEL?
+control_command_line ::=    LABEL? control_command expressions?
+user_command_line ::=       LABEL? USER_COMMAND expressions?
+only_a_label_line ::=       LABEL
 
 operand::= (
-	expr COMMA IDENTIFIER |
-	IMMEDIATE? expr |
-	OPEN_PAREN IMMEDIATE? expr CLOSE_PAREN |
-	OPEN_PAREN IMMEDIATE? expr CLOSE_PAREN COMMA IDENTIFIER |
-	OPEN_PAREN IMMEDIATE? expr COMMA IDENTIFIER CLOSE_PAREN
+	OPEN_PAREN expr CLOSE_PAREN COMMA IDENTIFIER |
+	OPEN_PAREN expr CLOSE_PAREN |
+	OPEN_PAREN expr COMMA IDENTIFIER CLOSE_PAREN |
+	IMMEDIATE expr |
+	expr (COMMA IDENTIFIER)? |
 )
 
 expressions::=expr (',' expr)*
 
+control_command::=(
+  CONTROL_COMMAND_ADDR
+| CONTROL_COMMAND_AL
+| CONTROL_COMMAND_ALIGN
+| CONTROL_COMMAND_AS
+| CONTROL_COMMAND_ASSERT
+| CONTROL_COMMAND_AUTSIZ
+| CONTROL_COMMAND_BEND
+| CONTROL_COMMAND_BINARY
+| CONTROL_COMMAND_BINCLUDE
+| CONTROL_COMMAND_BLOCK
+| CONTROL_COMMAND_BREAK
+| CONTROL_COMMAND_BYTE
+| CONTROL_COMMAND_CASE
+| CONTROL_COMMAND_CDEF
+| CONTROL_COMMAND_CERROR
+| CONTROL_COMMAND_CHAR
+| CONTROL_COMMAND_CHECK
+| CONTROL_COMMAND_CONTINUE
+| CONTROL_COMMAND_CPU
+| CONTROL_COMMAND_CWARN
+| CONTROL_COMMAND_DATABANK
+| CONTROL_COMMAND_DEFAULT
+| CONTROL_COMMAND_DINT
+| CONTROL_COMMAND_DPAGE
+| CONTROL_COMMAND_DSECTION
+| CONTROL_COMMAND_DSTRUCT
+| CONTROL_COMMAND_DUNION
+| CONTROL_COMMAND_DWORD
+| CONTROL_COMMAND_EDEF
+| CONTROL_COMMAND_ELSE
+| CONTROL_COMMAND_ELSIF
+| CONTROL_COMMAND_ENC
+| CONTROL_COMMAND_END
+| CONTROL_COMMAND_ENDF
+| CONTROL_COMMAND_ENDIF
+| CONTROL_COMMAND_ENDM
+| CONTROL_COMMAND_ENDN
+| CONTROL_COMMAND_ENDP
+| CONTROL_COMMAND_ENDS
+| CONTROL_COMMAND_ENDSWITCH
+| CONTROL_COMMAND_ENDU
+| CONTROL_COMMAND_ENDWEAK
+| CONTROL_COMMAND_EOR
+| CONTROL_COMMAND_ERROR
+| CONTROL_COMMAND_FI
+| CONTROL_COMMAND_FILL
+| CONTROL_COMMAND_FOR
+| CONTROL_COMMAND_FUNCTION
+| CONTROL_COMMAND_GOTO
+| CONTROL_COMMAND_HERE
+| CONTROL_COMMAND_HIDEMAC
+| CONTROL_COMMAND_IF
+| CONTROL_COMMAND_IFEQ
+| CONTROL_COMMAND_IFMI
+| CONTROL_COMMAND_IFNE
+| CONTROL_COMMAND_IFPL
+| CONTROL_COMMAND_INCLUDE
+| CONTROL_COMMAND_LBL
+| CONTROL_COMMAND_LINT
+| CONTROL_COMMAND_LOGICAL
+| CONTROL_COMMAND_LONG
+| CONTROL_COMMAND_MACRO
+| CONTROL_COMMAND_MANSIZ
+| CONTROL_COMMAND_NAMESPACE
+| CONTROL_COMMAND_NEXT
+| CONTROL_COMMAND_NULL
+| CONTROL_COMMAND_OFFS
+| CONTROL_COMMAND_OPTION
+| CONTROL_COMMAND_PAGE
+| CONTROL_COMMAND_PEND
+| CONTROL_COMMAND_PROC
+| CONTROL_COMMAND_PROFF
+| CONTROL_COMMAND_PRON
+| CONTROL_COMMAND_PTEXT
+| CONTROL_COMMAND_REPT
+| CONTROL_COMMAND_RTA
+| CONTROL_COMMAND_SECTION
+| CONTROL_COMMAND_SEED
+| CONTROL_COMMAND_SEGMENT
+| CONTROL_COMMAND_SEND
+| CONTROL_COMMAND_SHIFT
+| CONTROL_COMMAND_SHIFTL
+| CONTROL_COMMAND_SHOWMAC
+| CONTROL_COMMAND_SINT
+| CONTROL_COMMAND_STRUCT
+| CONTROL_COMMAND_SWITCH
+| CONTROL_COMMAND_TEXT
+| CONTROL_COMMAND_UNION
+| CONTROL_COMMAND_VAR
+| CONTROL_COMMAND_WARN
+| CONTROL_COMMAND_WEAK
+| CONTROL_COMMAND_WORD
+| CONTROL_COMMAND_XL
+| CONTROL_COMMAND_XS
+
+)
 
 expr ::=  add_group
   | mul_group
@@ -81,43 +150,45 @@ expr ::=  add_group
   | primary_group
 
 // private rules to define operators with the same priority
-private unary_group ::= unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
+private unary_group ::= anon_label_expr | unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
 private mul_group ::= mul_expr | div_expr | mod_expr | bit_and_expr | bit_xor_expr|shift_left_expr|shift_right_expr
 private add_group ::= plus_expr | minus_expr | bit_or_expr
 private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
 private boolean_group ::= boolean_and_expr|boolean_not_expr|boolean_or_expr
 private primary_group ::= function_call_expr | paren_expr | param_expr | primary_expr
 
+anon_label_expr::= (PLUS|MINUS)
+
 // public rules for each expression
-unary_min_expr ::= '-' expr
-unary_plus_expr ::= '+' expr
-bit_not_expr ::= '~' expr
-lo_byte_expr ::= '<' expr
-hi_byte_expr ::= '>' expr
-bank_byte_expr ::= '^' expr
+unary_min_expr ::= MINUS expr
+unary_plus_expr ::= PLUS expr
+bit_not_expr ::= TILDE expr
+lo_byte_expr ::= LESS expr
+hi_byte_expr ::= GREATER expr
+bank_byte_expr ::= DAKJE expr
 
-div_expr ::= expr '/' expr
-mul_expr ::= expr '*' expr
-mod_expr ::= expr '%' expr
-bit_and_expr ::= expr '&' expr
-bit_xor_expr ::= expr '^' expr
-shift_left_expr ::= expr '<<' expr
-shift_right_expr ::= expr '>>' expr
+div_expr ::= expr DIV expr
+mul_expr ::= expr TIMES expr
+mod_expr ::= expr MODULO expr
+bit_and_expr ::= expr AND expr
+bit_xor_expr ::= expr DAKJE expr
+shift_left_expr ::= expr SHIFT_LEFT expr
+shift_right_expr ::= expr SHIFT_RIGHT expr
 
-minus_expr ::= expr '-' expr
-plus_expr ::= expr '+' expr
-bit_or_expr ::= expr '|' expr
+minus_expr ::= expr MINUS expr
+plus_expr ::= expr PLUS expr
+bit_or_expr ::= expr PIPE expr
 
-equal_expr ::= expr '=' expr
-not_equal_expr ::= expr '<>' expr
-less_than_expr ::= expr '<' expr
-greater_than_expr ::= expr '>' expr
-less_equal_expr ::= expr '<=' expr
-greater_equal_expr ::= expr '>=' expr
+equal_expr ::= expr EQUAL expr
+not_equal_expr ::= expr NOT_EQUAL expr
+less_than_expr ::= expr LESS expr
+greater_than_expr ::= expr GREATER expr
+less_equal_expr ::= expr LESS_EQUAL expr
+greater_equal_expr ::= expr GREATER_EQUAL expr
 
-boolean_and_expr ::= expr '&&' expr
-boolean_or_expr ::= expr '||' expr
-boolean_not_expr ::= expr '!' expr
+boolean_and_expr ::= expr BOOLEAN_AND expr
+boolean_or_expr ::= expr BOOLEAN_OR expr
+boolean_not_expr ::= expr BOOLEAN_NOT expr
 
 paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
 param_expr ::= OPEN_BRACE expr CLOSE_BRACE
@@ -129,7 +200,7 @@ primary_expr::=
 |   IDENTIFIER
 |   STRING
 |   label_ref
-| CONTROL_COMMAND
+| control_command
 | USER_COMMAND
 | PARAMETER_USAGE
 | MNEMONIC
@@ -138,43 +209,43 @@ primary_expr::=
 )
 
 function_call_expr ::= (
-//  'floor' OPEN_PAREN expr CLOSE_PAREN
-//| 'round' OPEN_PAREN expr CLOSE_PAREN
-//| 'ceil' OPEN_PAREN expr CLOSE_PAREN
-//| 'trunc' OPEN_PAREN expr CLOSE_PAREN
-//| 'frac' OPEN_PAREN expr CLOSE_PAREN
-//| 'sqrt' OPEN_PAREN expr CLOSE_PAREN
-//| 'cbrt' OPEN_PAREN expr CLOSE_PAREN
-//| 'log10' OPEN_PAREN expr CLOSE_PAREN
-//| 'log' OPEN_PAREN expr CLOSE_PAREN
-//| 'exp' OPEN_PAREN expr CLOSE_PAREN
-//| 'pow' OPEN_PAREN expr COMMA expr CLOSE_PAREN
-//| 'sin' OPEN_PAREN expr CLOSE_PAREN
-//| 'asin' OPEN_PAREN expr CLOSE_PAREN
-//| 'sinh' OPEN_PAREN expr CLOSE_PAREN
-//| 'cos' OPEN_PAREN expr CLOSE_PAREN
-//| 'acos' OPEN_PAREN expr CLOSE_PAREN
-//| 'cosh' OPEN_PAREN expr CLOSE_PAREN
-//| 'tan' OPEN_PAREN expr CLOSE_PAREN
-//| 'atan' OPEN_PAREN expr CLOSE_PAREN
-//| 'tanh' OPEN_PAREN expr CLOSE_PAREN
-//| 'rad' OPEN_PAREN expr CLOSE_PAREN
-//| 'deg' OPEN_PAREN expr CLOSE_PAREN
-//| 'hypot' OPEN_PAREN expr COMMA expr CLOSE_PAREN
-//| 'atan2' OPEN_PAREN expr COMMA expr CLOSE_PAREN
-//| 'abc' OPEN_PAREN expr CLOSE_PAREN
-//| 'sign' OPEN_PAREN expr CLOSE_PAREN
-//
-//| 'all' OPEN_PAREN expr CLOSE_PAREN
-//| 'any' OPEN_PAREN expr CLOSE_PAREN
-
- FORMAT OPEN_PAREN STRING COMMA expr (COMMA expr)* CLOSE_PAREN
-//| 'len' OPEN_PAREN expr CLOSE_PAREN
-//| 'random' OPEN_PAREN expr (COMMA expr)* CLOSE_PAREN
-//| 'range' OPEN_PAREN expr (COMMA expr)* CLOSE_PAREN
-//| 'repr' OPEN_PAREN expr CLOSE_PAREN
-//| 'size' OPEN_PAREN expr CLOSE_PAREN
+  FUNCTION_ABS expr CLOSE_PAREN
+| FUNCTION_ACOS expr CLOSE_PAREN
+| FUNCTION_ALL expr CLOSE_PAREN
+| FUNCTION_ANY expr CLOSE_PAREN
+| FUNCTION_ASIN expr CLOSE_PAREN
+| FUNCTION_ATAN expr COMMA expr CLOSE_PAREN
+| FUNCTION_ATAN2 expr CLOSE_PAREN
+| FUNCTION_CBRT expr CLOSE_PAREN
+| FUNCTION_CEIL expr CLOSE_PAREN
+| FUNCTION_COS expr CLOSE_PAREN
+| FUNCTION_COSH expr CLOSE_PAREN
+| FUNCTION_DEG expr CLOSE_PAREN
+| FUNCTION_EXP expr CLOSE_PAREN
+| FUNCTION_FLOOR expr CLOSE_PAREN
+| FUNCTION_FORMAT STRING COMMA expr (COMMA expr)* CLOSE_PAREN
+| FUNCTION_FRAC expr CLOSE_PAREN
+| FUNCTION_HYPOT expr COMMA expr CLOSE_PAREN
+| FUNCTION_LEN expr CLOSE_PAREN
+| FUNCTION_LOG expr CLOSE_PAREN
+| FUNCTION_LOG10 expr CLOSE_PAREN
+| FUNCTION_POW expr COMMA expr CLOSE_PAREN
+| FUNCTION_RAD expr CLOSE_PAREN
+| FUNCTION_RANDOM expr (COMMA expr)* CLOSE_PAREN
+| FUNCTION_RANGE expr (COMMA expr)* CLOSE_PAREN
+| FUNCTION_REPR expr CLOSE_PAREN
+| FUNCTION_ROUND expr CLOSE_PAREN
+| FUNCTION_SIGN expr CLOSE_PAREN
+| FUNCTION_SIN expr CLOSE_PAREN
+| FUNCTION_SINH expr CLOSE_PAREN
+| FUNCTION_SIZE expr CLOSE_PAREN
 // Should be list, not expr
-//| 'sort' OPEN_PAREN expr CLOSE_PAREN
+| FUNCTION_SORT expr CLOSE_PAREN
+| FUNCTION_SQRT expr CLOSE_PAREN
+| FUNCTION_TAN expr CLOSE_PAREN
+| FUNCTION_TANH expr CLOSE_PAREN
+| FUNCTION_TRUNC expr CLOSE_PAREN
+
+
 
 )
