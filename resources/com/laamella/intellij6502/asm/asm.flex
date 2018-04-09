@@ -21,7 +21,6 @@ MNEMONIC=(ADC|AND|ASL|BCC|BCS|BEQ|BIT|BMI|BNE|BPL|BRK|BVC|BVS|CLC|
           JSR|LDA|LDX|LDY|LSR|NOP|ORA|PHA|PHP|PLA|PLP|ROL|ROR|RTI|
           RTS|SBC|SEC|SED|SEI|STA|STX|STY|TAX|TAY|TSX|TXA|TXS|TYA)
 
-USER_COMMAND=("."|"#")[a-zA-Z_][a-zA-Z0-9_]*
 TYPE=(address|bits|bool|bytes|code|dict|float|gap|int|list|str|tuple|type)
 EOL=(\r|\n|\r\n)
 WHITE_SPACE=[\ \t\f]
@@ -174,6 +173,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 "{"                           { return AssemblyTypes.OPEN_BRACE; }
 "}"                           { return AssemblyTypes.CLOSE_BRACE; }
 ","                           { return AssemblyTypes.COMMA; }
+"."                           { return AssemblyTypes.DOT; }
 "-"                           { return AssemblyTypes.MINUS; }
 "+"                           { return AssemblyTypes.PLUS; }
 "*"                           { return AssemblyTypes.TIMES; }
@@ -195,7 +195,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 "<"                           { return AssemblyTypes.LESS; }
 ">"                           { return AssemblyTypes.GREATER; }
 "="                           { return AssemblyTypes.EQUAL; }
-"#"                           { return AssemblyTypes.IMMEDIATE; }
+"#"                           { return AssemblyTypes.HEKJE; }
 "$"[0-9a-fA-F]+               { return AssemblyTypes.HEX_NUMBER; }
 [0-9]+                        { return AssemblyTypes.NUMBER; }
 {COMMENT}                     { return AssemblyTypes.COMMENT; }
@@ -203,5 +203,4 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 {MNEMONIC}                    { return AssemblyTypes.MNEMONIC; }
 {TYPE}                        { return AssemblyTypes.TYPE; }
 {IDENTIFIER}                  { return AssemblyTypes.IDENTIFIER; }
-{USER_COMMAND}             { return AssemblyTypes.USER_COMMAND; }
 .                             { return TokenType.BAD_CHARACTER; }

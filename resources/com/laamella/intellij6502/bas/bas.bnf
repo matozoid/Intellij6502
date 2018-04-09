@@ -8,7 +8,7 @@
   psiPackage="com.laamella.intellij6502.basic.psi"
   psiImplPackage="com.laamella.intellij6502.basic.psi.impl"
 
-  elementTypeHolderClass="com.laamella.intellij6502.basic.psi.Ca65Types"
+  elementTypeHolderClass="com.laamella.intellij6502.basic.psi.BasicTypes"
   elementTypeClass="com.laamella.intellij6502.basic.psi.AssemblyElementType"
   tokenTypeClass="com.laamella.intellij6502.basic.psi.AssemblyTokenType"
 

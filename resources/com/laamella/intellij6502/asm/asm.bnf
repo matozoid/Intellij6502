@@ -1,5 +1,5 @@
 {
-  parserClass="com.laamella.intellij6502.asm.Ca65Parser"
+  parserClass="com.laamella.intellij6502.asm.AssemblyParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -15,9 +15,7 @@
 	 extends(".*expr")=expr
 }
 
-ca65File::= (line? EOL)*
-
-label_ref::=(IDENTIFIER|PLUS|MINUS)
+AssemblyFile::= (line? EOL)*
 
 line ::= ((
 	symbol_definition_line |
@@ -31,14 +29,14 @@ symbol_definition_line ::=  ( LABEL? (IDENTIFIER|'*') EQUAL expr
 							| LABEL EQUAL expr )
 instruction_line ::=        LABEL? MNEMONIC operand?
 control_command_line ::=    LABEL? control_command expressions?
-user_command_line ::=       LABEL? USER_COMMAND expressions?
+user_command_line ::=       LABEL? (DOT|HEKJE) IDENTIFIER expressions?
 only_a_label_line ::=       LABEL
 
 operand::= (
 	OPEN_PAREN expr CLOSE_PAREN COMMA IDENTIFIER |
 	OPEN_PAREN expr CLOSE_PAREN |
 	OPEN_PAREN expr COMMA IDENTIFIER CLOSE_PAREN |
-	IMMEDIATE expr |
+	HEKJE expr |
 	expr (COMMA IDENTIFIER)? |
 )
 
@@ -147,15 +145,16 @@ expr ::=  add_group
   | unary_group
   | equality_group
   | boolean_group
+  | qualification_expr
   | primary_group
 
 // private rules to define operators with the same priority
-private unary_group ::= anon_label_expr | unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
+private unary_group ::= unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
 private mul_group ::= mul_expr | div_expr | mod_expr | bit_and_expr | bit_xor_expr|shift_left_expr|shift_right_expr
 private add_group ::= plus_expr | minus_expr | bit_or_expr
 private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
 private boolean_group ::= boolean_and_expr|boolean_not_expr|boolean_or_expr
-private primary_group ::= function_call_expr | paren_expr | param_expr | primary_expr
+private primary_group ::= anon_label_expr | simple_ref_expr | function_call_expr | paren_expr | param_expr | primary_expr
 
 anon_label_expr::= (PLUS|MINUS)
 
@@ -193,19 +192,21 @@ boolean_not_expr ::= expr BOOLEAN_NOT expr
 paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
 param_expr ::= OPEN_BRACE expr CLOSE_BRACE
 
+fake ref_expr ::= expr? DOT IDENTIFIER
+simple_ref_expr ::= IDENTIFIER {extends=ref_expr elementType=ref_expr}
+qualification_expr ::= expr DOT IDENTIFIER {extends=ref_expr elementType=ref_expr}
+
 primary_expr::=
 (   HEX_NUMBER
 |   NUMBER
 |   BINARY_NUMBER
 |   IDENTIFIER
 |   STRING
-|   label_ref
-| control_command
-| USER_COMMAND
-| PARAMETER_USAGE
-| MNEMONIC
-| TYPE
-| FUNCTION
+|   control_command
+|   PARAMETER_USAGE
+|   MNEMONIC
+|   TYPE
+|   FUNCTION
 )
 
 function_call_expr ::= (

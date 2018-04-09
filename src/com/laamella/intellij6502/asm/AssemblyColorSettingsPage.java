@@ -44,28 +44,21 @@ public class AssemblyColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDemoText() {
-        return "           COUT = $FDED \n" +
+        return "        .struct         ;anonymous structure\n" +
+                "x       .byte 0         ;labels are visible\n" +
+                "y       .byte 0         ;content compiled here\n" +
+                "        .ends           ;useful inside unions\n" +
                 "\n" +
-                ".macro ASC text \n" +
-                "    .repeat .strlen(text), I \n" +
-                "    .byte   .strat(text, I) | $80 \n" +
-                "    .endrep \n" +
-                ".endmacro \n" +
-                "            __MAIN = $1000       ; Apple DOS 3.3 sprites file 4 byte prefix header \n" +
-                "            .word __MAIN         ; 2 byte BLAOD address \n" +
-                "            .word __END - __MAIN ; 2 byte BLOAD size \n" +
-                "            .org  __MAIN         ; .org must come after header else offsets are wrong \n" +
-                "            LDX    #0 \n" +
-                "            LDA    MSG,X    ; load initial char \n" +
-                "PRINTCHAR:  JSR    COUT \n" +
-                "            INX \n" +
-                "            LDA    MSG,X \n" +
-                "            BNE    PRINTCHAR \n" +
-                "            RTS \n" +
-                "MSG: \n" +
-                "            ASC \"Hello world, Apple!\" \n" +
-                "            .byte $00 \n" +
-                "__END: ";
+                "nn_s    .struct col, row;named structure\n" +
+                "x       .byte \\col      ;labels are not visible\n" +
+                "y       .byte \\row      ;no content is compiled here\n" +
+                "        .ends           ;it's just a definition\n" +
+                "\n" +
+                "nn      .dstruct nn_s, 1, 2;structure instance, content here\n" +
+                "\n" +
+                "        lda nn.x        ;direct field access\n" +
+                "        ldy #nn_s.x     ;get offset of field\n" +
+                "        lda nn,y        ;and use it indirectly";
     }
 
     @Nullable
@@ -89,6 +82,6 @@ public class AssemblyColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return "Ca65";
+        return "Assembly";
     }
 }
