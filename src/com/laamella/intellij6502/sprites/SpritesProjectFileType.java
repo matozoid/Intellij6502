@@ -31,6 +31,6 @@ public class SpritesProjectFileType extends UserBinaryFileType {
     @Nullable
     @Override
     public Icon getIcon() {
-        return Intellij6502Icons.FILE;
+        return Intellij6502Icons.SPRITES_PROJECT;
     }
 }
