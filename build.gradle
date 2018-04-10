@@ -1,0 +1,83 @@
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
+
+buildscript {
+    ext.kotlin_version = '1.2.30'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io'}
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.github.JetBrains:gradle-grammar-kit-plugin:2018.1.1"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.intellij' version '0.3.1'
+}
+
+group 'com.laamella'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.grammarkit'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'gen'
+        }
+    }
+}
+
+task generateAssemblerLexer(type: GenerateLexer) {
+    source='src/main/grammars/asm/asm.flex'
+    targetDir='gen/com/laamella/intellij6502/asm'
+    targetClass='AssemblyLexer'
+    purgeOldFiles=true
+}
+
+
+task generateAssemblerParser(type: GenerateParser) {
+    source='src/main/grammars/asm/asm.bnf'
+    targetRoot='gen/'
+    pathToParser='com/laamella/intellij6502/asm/AssemblyParser.java'
+    pathToPsiRoot='com/laamella/intellij6502/asm/psi'
+    purgeOldFiles=true
+}
+
+task generateLanguages {
+    dependsOn generateAssemblerLexer
+    dependsOn generateAssemblerParser
+}
+
+compileJava {
+    dependsOn generateLanguages
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+    dependsOn generateLanguages
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+    dependsOn generateLanguages
+}
+intellij {
+    version '2018.1'
+}
+patchPluginXml {
+    changeNotes """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}

@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>com.laamella.intellij6502</id>
+    <name>6502 assembly plugin</name>
+    <version>1.0</version>
+    <vendor email="hexagonaal@gmail.com" url="http://www.laamella.com">Laamella Gad</vendor>
+
+    <description><![CDATA[
+
+    ]]></description>
+
+    <change-notes><![CDATA[
+		1.0 First release.
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+		 on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+	<depends>com.intellij.modules.lang</depends>
+	-->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.laamella.intellij6502.Intellij6502FileTypeFactory"/>
+        <lang.parserDefinition language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="asm"
+                                       implementationClass="com.laamella.intellij6502.asm.AssemblySyntaxHighlighterFactory"/>
+        <lang.commenter language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyCommenter"/>
+
+        <colorSettingsPage implementation="com.laamella.intellij6502.asm.AssemblyColorSettingsPage"/>
+    </extensions>
+</idea-plugin>
