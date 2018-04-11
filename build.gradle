@@ -2,11 +2,11 @@ import org.jetbrains.grammarkit.tasks.GenerateLexer
 import org.jetbrains.grammarkit.tasks.GenerateParser
 
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.31'
 
     repositories {
         mavenCentral()
-        maven { url 'https://jitpack.io'}
+        maven { url='https://jitpack.io'}
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -18,8 +18,8 @@ plugins {
     id 'org.jetbrains.intellij' version '0.3.1'
 }
 
-group 'com.laamella'
-version '1.0-SNAPSHOT'
+group='com.laamella'
+version='1.0-SNAPSHOT'
 
 apply plugin: 'kotlin'
 apply plugin: 'org.jetbrains.grammarkit'
@@ -74,7 +74,7 @@ compileTestKotlin {
     dependsOn generateLanguages
 }
 intellij {
-    version '2018.1'
+    version='2018.1'
 }
 patchPluginXml {
     changeNotes """
