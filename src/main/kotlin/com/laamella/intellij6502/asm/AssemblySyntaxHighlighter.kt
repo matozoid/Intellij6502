@@ -20,7 +20,7 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
-        return highlights.getOrDefault(tokenType, Companion.EMPTY_KEYS)
+        return highlights.getOrDefault(tokenType, EMPTY_KEYS)
     }
 
     companion object {
