@@ -9,12 +9,10 @@ import com.laamella.intellij6502.Intellij6502Icons
 
 import javax.swing.*
 
-import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
-
 class AssemblyColorSettingsPage : ColorSettingsPage {
 
     override fun getIcon(): Icon? {
-        return Intellij6502Icons.FILE
+        return Intellij6502Icons.ASM_FILE
     }
 
     override fun getHighlighter(): SyntaxHighlighter {

@@ -1,14 +1,14 @@
-package com.laamella.intellij6502.asm
+package com.laamella.intellij6502.prg
 
 import com.intellij.openapi.fileTypes.LanguageFileType
 import com.laamella.intellij6502.Intellij6502Icons
 
 import javax.swing.*
 
-class AssemblyFileType private constructor() : LanguageFileType(AssemblyLanguage.INSTANCE) {
+class PrgFileType private constructor() : LanguageFileType(PrgLanguage.INSTANCE) {
 
     override fun getName(): String {
-        return "assembly file"
+        return "prg file"
     }
 
     override fun getDescription(): String {
@@ -16,7 +16,7 @@ class AssemblyFileType private constructor() : LanguageFileType(AssemblyLanguage
     }
 
     override fun getDefaultExtension(): String {
-        return "asm"
+        return "prg"
     }
 
     override fun getIcon(): Icon? {
@@ -24,6 +24,6 @@ class AssemblyFileType private constructor() : LanguageFileType(AssemblyLanguage
     }
 
     companion object {
-        val INSTANCE = AssemblyFileType()
+        val INSTANCE = PrgFileType()
     }
 }
