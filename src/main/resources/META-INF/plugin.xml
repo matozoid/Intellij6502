@@ -28,6 +28,7 @@
         <lang.syntaxHighlighterFactory language="asm"
                                        implementationClass="com.laamella.intellij6502.asm.AssemblySyntaxHighlighterFactory"/>
         <lang.commenter language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyCommenter"/>
+        <fileTypeIndentOptionsProvider implementation="com.laamella.intellij6502.asm.AssemblyFileTypeIndentOptionsProvider"/>
 
         <colorSettingsPage implementation="com.laamella.intellij6502.asm.AssemblyColorSettingsPage"/>
     </extensions>
