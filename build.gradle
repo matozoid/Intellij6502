@@ -36,14 +36,14 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDir 'gen'
+            srcDir 'src/gen'
         }
     }
 }
 
 task generateAssemblerLexer(type: GenerateLexer) {
     source='src/main/grammars/asm/asm.flex'
-    targetDir='gen/com/laamella/intellij6502/asm'
+    targetDir='src/gen/com/laamella/intellij6502/asm'
     targetClass='AssemblyLexer'
     purgeOldFiles=true
 }
@@ -51,7 +51,7 @@ task generateAssemblerLexer(type: GenerateLexer) {
 
 task generateAssemblerParser(type: GenerateParser) {
     source='src/main/grammars/asm/asm.bnf'
-    targetRoot='gen/'
+    targetRoot='src/gen/'
     pathToParser='com/laamella/intellij6502/asm/AssemblyParser.java'
     pathToPsiRoot='com/laamella/intellij6502/asm/psi'
     purgeOldFiles=true
