@@ -1,6 +1,5 @@
 package com.laamella.intellij6502.asm.execution;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.LocatableConfigurationBase;
@@ -11,7 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ViceX64RunConfiguration extends LocatableConfigurationBase {
-    protected ViceX64RunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
+    private String executable;
+
+    ViceX64RunConfiguration(@NotNull Project project, @NotNull ConfigurationFactory factory, String name) {
         super(project, factory, name);
     }
 
@@ -28,7 +29,15 @@ public class ViceX64RunConfiguration extends LocatableConfigurationBase {
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
-        return null;
+    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) {
+        return new ViceX64RunProfileState(executor, environment);
+    }
+
+    void setExecutable(String executable) {
+        this.executable = executable;
+    }
+
+    String getExecutable() {
+        return executable;
     }
 }

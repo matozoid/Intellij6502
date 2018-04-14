@@ -29,6 +29,7 @@
                                        implementationClass="com.laamella.intellij6502.asm.AssemblySyntaxHighlighterFactory"/>
         <lang.commenter language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyCommenter"/>
         <configurationType implementation="com.laamella.intellij6502.asm.execution.ViceX64RunConfigurationType" />
+        <programRunner implementation="com.laamella.intellij6502.asm.execution.ViceX64Runner"/>
 
         <colorSettingsPage implementation="com.laamella.intellij6502.asm.AssemblyColorSettingsPage"/>
     </extensions>

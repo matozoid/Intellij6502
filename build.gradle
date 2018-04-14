@@ -42,7 +42,7 @@ sourceSets {
 }
 
 task generateAssemblerLexer(type: GenerateLexer) {
-    source='src/main/grammars/asm/asm.flex'
+    source='src/main/grammars/asm.flex'
     targetDir='gen/com/laamella/intellij6502/asm'
     targetClass='AssemblyLexer'
     purgeOldFiles=true
@@ -50,7 +50,7 @@ task generateAssemblerLexer(type: GenerateLexer) {
 
 
 task generateAssemblerParser(type: GenerateParser) {
-    source='src/main/grammars/asm/asm.bnf'
+    source='src/main/grammars/asm.bnf'
     targetRoot='gen/'
     pathToParser='com/laamella/intellij6502/asm/AssemblyParser.java'
     pathToPsiRoot='com/laamella/intellij6502/asm/psi'

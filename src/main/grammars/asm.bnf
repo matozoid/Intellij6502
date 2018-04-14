@@ -12,7 +12,7 @@
   elementTypeClass="com.laamella.intellij6502.asm.psi.AssemblyElementType"
   tokenTypeClass="com.laamella.intellij6502.asm.psi.AssemblyTokenType"
 
-	 extends(".*expr")=expr
+  extends(".*expr")=expr
 }
 
 AssemblyFile::= (line? EOL)*
