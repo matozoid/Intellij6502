@@ -28,6 +28,8 @@
         <lang.syntaxHighlighterFactory language="asm"
                                        implementationClass="com.laamella.intellij6502.asm.AssemblySyntaxHighlighterFactory"/>
         <lang.commenter language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyCommenter"/>
+        <moduleType id="ASSEMBLY_MODULE" implementationClass="com.laamella.intellij6502.asm.AssemblyModule"/>
+        <moduleBuilder builderClass="com.laamella.intellij6502.asm.AssemblyModuleBuilder"/>
 
         <colorSettingsPage implementation="com.laamella.intellij6502.asm.AssemblyColorSettingsPage"/>
     </extensions>
