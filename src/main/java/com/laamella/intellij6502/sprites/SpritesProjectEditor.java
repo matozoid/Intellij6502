@@ -7,6 +7,7 @@ import com.intellij.codeHighlighting.BackgroundEditorHighlighter;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ThreeComponentsSplitter;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.ui.UIUtil;
@@ -25,7 +26,6 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 public class SpritesProjectEditor implements FileEditor {
     private final Project project;
     private final VirtualFile file;
-    private final SpritesProjectEditorForm form;
     private final SpritesProject spritesProject;
     private boolean modified = false;
 
@@ -33,7 +33,7 @@ public class SpritesProjectEditor implements FileEditor {
         this.project = project;
         this.file = file;
 
-        form = new SpritesProjectEditorForm();
+//        form = new SpritesProjectEditorForm();
         try {
             byte[] bytes = file.contentsToByteArray();
             Gson gson = new GsonBuilder().create();
@@ -56,31 +56,33 @@ public class SpritesProjectEditor implements FileEditor {
             }
         });
 
-        for (int i = 0; i < 10; i++) {
-            BufferedImage image = UIUtil.createImage(48, 50, TYPE_INT_ARGB);
-
-            // get the Graphics context for this single BufferedImage object
-            Graphics g = image.getGraphics();
-
-            g.drawString("Point is here", 0, 10);
-            g.drawRect(0, 0, 47, 49);
-
-            g.dispose();  // get rid of the Graphics context to save resources
-
-            form.getSpritesContainer().add(new SpriteComponent(image));
-        }
+//        for (int i = 0; i < 10; i++) {
+//            BufferedImage image = UIUtil.createImage(48, 50, TYPE_INT_ARGB);
+//
+//            // get the Graphics context for this single BufferedImage object
+//            Graphics g = image.getGraphics();
+//
+//            g.drawString("Point is here", 0, 10);
+//            g.drawRect(0, 0, 47, 49);
+//
+//            g.dispose();  // get rid of the Graphics context to save resources
+//
+//            form.getSpritesContainer().add(new SpriteComponent(image));
+//        }
     }
 
     @NotNull
     @Override
     public JComponent getComponent() {
-        return form.getRootPanel();
+        return null;
+//        return form.getRootPanel();
     }
 
     @Nullable
     @Override
     public JComponent getPreferredFocusedComponent() {
-        return form.getRootPanel();
+        return null;
+//        return form.getRootPanel();
     }
 
     @NotNull
@@ -162,22 +164,12 @@ public class SpritesProjectEditor implements FileEditor {
         JFrame frame = new JFrame("JToolBar Example");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        SpritesProjectEditorForm form = new SpritesProjectEditor(null, null).form;
-        frame.add(form.getRootPanel(), BorderLayout.CENTER);
-        form.getSpritesContainer().setLayout(new WrapLayout(FlowLayout.LEFT));
-        for (int i = 0; i < 10; i++) {
-            BufferedImage image = UIUtil.createImage(48, 50, TYPE_INT_ARGB);
 
-            // get the Graphics context for this single BufferedImage object
-            Graphics g = image.getGraphics();
-
-            g.drawString("Point is here", 0, 10);
-            g.drawRect(0, 0, 47, 49);
-
-            g.dispose();  // get rid of the Graphics context to save resources
-
-            form.getSpritesContainer().add(new SpriteComponent(image));
-        }
+        ThreeComponentsSplitter splitter = new ThreeComponentsSplitter();
+        splitter.setFirstComponent(new JLabel("first"));
+//        splitter.setInnerComponent(new JLabel("inner"));
+//        splitter.setLastComponent(new JLabel("last"));
+        frame.add(splitter, BorderLayout.CENTER);
         frame.setSize(650, 650);
         frame.setVisible(true);
     }
