@@ -178,6 +178,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 "."                           { return AssemblyTypes.DOT; }
 "-"                           { return AssemblyTypes.MINUS; }
 "+"                           { return AssemblyTypes.PLUS; }
+"**"                          { return AssemblyTypes.POW; }
 "*"                           { return AssemblyTypes.TIMES; }
 "/"                           { return AssemblyTypes.DIV; }
 "~"                           { return AssemblyTypes.TILDE; }

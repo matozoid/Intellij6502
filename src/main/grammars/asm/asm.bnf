@@ -150,7 +150,7 @@ expr ::=  add_group
 
 // private rules to define operators with the same priority
 private add_group ::= plus_expr | minus_expr | bit_or_expr
-private mul_group ::= mul_expr | div_expr | mod_expr | bit_and_expr | bit_xor_expr|shift_left_expr|shift_right_expr
+private mul_group ::= mul_expr | pow_expr | div_expr | mod_expr | bit_and_expr | bit_xor_expr|shift_left_expr|shift_right_expr
 private unary_group ::= unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
 private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
 private boolean_group ::= boolean_and_expr|boolean_not_expr|boolean_or_expr
@@ -166,6 +166,7 @@ bank_byte_expr ::= DAKJE expr
 
 div_expr ::= expr DIV expr
 mul_expr ::= expr TIMES expr
+pow_expr ::= expr POW expr
 mod_expr ::= expr MODULO expr
 bit_and_expr ::= expr AND expr
 bit_xor_expr ::= expr DAKJE expr
