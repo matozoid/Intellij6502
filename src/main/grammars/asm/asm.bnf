@@ -25,8 +25,9 @@ line ::= ((
 	only_a_label_line)?
 	COMMENT?)
 
-symbol_definition_line ::=  ( LABEL? (IDENTIFIER|'*') EQUAL expr
-							| LABEL EQUAL expr )
+symbol_definition_line ::=  ( LABEL? (IDENTIFIER|'*') IS expr
+							| LABEL IS expr
+							| LABEL compound_var_assignment expr )
 instruction_line ::=        LABEL? MNEMONIC operand?
 control_command_line ::=    LABEL? control_command expressions?
 user_command_line ::=       LABEL? (DOT|HEKJE) IDENTIFIER expressions?
@@ -41,6 +42,26 @@ operand::= (
 )
 
 expressions::=expr (',' expr)*
+
+compound_var_assignment ::=
+		ADD_COMPOUND|
+        SUBTRACT_COMPOUND|      
+        MULTIPLY_COMPOUND|      
+        DIVIDE_COMPOUND|        
+        MODULO_COMPOUND|        
+        RAISE_TO_POWER_COMPOUND|
+        BINARY_OR_COMPOUND|     
+        BINARY_XOR_COMPOUND|    
+        BINARY_AND_COMPOUND|    
+        LOGICAL_OR_COMPOUND|    
+        LOGICAL_AND_COMPOUND|   
+        SHIFT_LEFT_COMPOUND|    
+        SHIFT_RIGHT_COMPOUND|   
+        CONCAT_COMPOUND|        
+        SMALLER_COMPOUND|       
+        GREATER_COMPOUND|       
+        REPEAT_COMPOUND|        
+        MEMBER_COMPOUND
 
 control_command::=(
   CONTROL_COMMAND_ADDR
@@ -149,34 +170,48 @@ expr ::=  add_group
   | primary_group
 
 // private rules to define operators with the same priority
-private add_group ::= plus_expr | minus_expr | bit_or_expr
-private mul_group ::= mul_expr | pow_expr | div_expr | mod_expr | bit_and_expr | bit_xor_expr|shift_left_expr|shift_right_expr
-private unary_group ::= unary_plus_expr | unary_min_expr | bit_not_expr |lo_byte_expr|hi_byte_expr|bank_byte_expr
-private equality_group ::= equal_expr|not_equal_expr|less_than_expr|greater_than_expr|less_equal_expr|greater_equal_expr
-private boolean_group ::= boolean_and_expr|boolean_not_expr|boolean_or_expr
-private primary_group ::= simple_ref_expr | function_call_expr | paren_expr | param_expr | primary_expr
+private add_group ::= add_expr | subtract_expr | binary_or_expr | concat_expr | in_expr
+private mul_group ::= multiply_expr | raise_to_power_expr | divide_expr | modulo_expr | binary_and_expr | binary_xor_expr | shift_left_expr | shift_right_expr
+private unary_group ::= positive_expr | negative_expr | invert_expr | not_expr | lower_byte_expr | higher_byte_expr | bank_byte_expr | bank_byte_2_expr | convert_to_arguments_expr
+| lower_word_expr | higher_word_expr | lower_byte_swapped_word_expr
+| force_8_bit_address_expr | force_16_bit_address_expr | force_24_bit_address_expr
+private equality_group ::= compare_expr | equal_expr | not_equal_expr | less_than_expr | greater_than_expr | less_equal_expr | greater_equal_expr
+private boolean_group ::= boolean_and_expr | boolean_or_expr | boolean_xor_expr | boolean_greater_than_expr | boolean_less_than_expr
+private primary_group ::= simple_member_expr | function_call_expr | paren_expr | param_expr | primary_expr | ternary_expr
 
 // public rules for each expression
-unary_min_expr ::= MINUS expr? // doubles as - label
-unary_plus_expr ::= PLUS expr? // doubles as + label
-bit_not_expr ::= TILDE expr
-lo_byte_expr ::= LESS expr
-hi_byte_expr ::= GREATER expr
+negative_expr ::= MINUS expr? // doubles as - label
+positive_expr ::= PLUS expr? // doubles as + label
+invert_expr ::= TILDE expr
+not_expr ::= EXCLAMATION expr
+convert_to_arguments_expr ::= TIMES expr
+lower_byte_expr ::= LESS expr
+higher_byte_expr ::= GREATER expr
+lower_word_expr ::= LOWER_WORD expr
+lower_byte_swapped_word_expr ::= LOWER_BYTE_SWAPPED_WORD expr
+higher_word_expr ::= HIGHER_WORD expr
 bank_byte_expr ::= DAKJE expr
+bank_byte_2_expr ::= BANK_BYTE expr
+force_8_bit_address_expr ::= FORCE_8_BIT_ADDRESS expr
+force_16_bit_address_expr ::= FORCE_16_BIT_ADDRESS expr
+force_24_bit_address_expr ::= FORCE_24_BIT_ADDRESS expr
 
-div_expr ::= expr DIV expr
-mul_expr ::= expr TIMES expr
-pow_expr ::= expr POW expr
-mod_expr ::= expr MODULO expr
-bit_and_expr ::= expr AND expr
-bit_xor_expr ::= expr DAKJE expr
+divide_expr ::= expr DIV expr
+multiply_expr ::= expr TIMES expr
+raise_to_power_expr ::= expr POW expr
+modulo_expr ::= expr MODULO expr
+binary_and_expr ::= expr AND expr
+binary_xor_expr ::= expr DAKJE expr
 shift_left_expr ::= expr SHIFT_LEFT expr
 shift_right_expr ::= expr SHIFT_RIGHT expr
+concat_expr ::= expr CONCAT expr
+in_expr ::= expr IN expr
 
-minus_expr ::= expr MINUS expr
-plus_expr ::= expr PLUS expr
-bit_or_expr ::= expr PIPE expr
+subtract_expr ::= expr MINUS expr
+add_expr ::= expr PLUS expr
+binary_or_expr ::= expr PIPE expr
 
+compare_expr ::= expr COMPARE expr
 equal_expr ::= expr EQUAL expr
 not_equal_expr ::= expr NOT_EQUAL expr
 less_than_expr ::= expr LESS expr
@@ -186,14 +221,17 @@ greater_equal_expr ::= expr GREATER_EQUAL expr
 
 boolean_and_expr ::= expr BOOLEAN_AND expr
 boolean_or_expr ::= expr BOOLEAN_OR expr
-boolean_not_expr ::= expr BOOLEAN_NOT expr
+boolean_xor_expr ::= expr BOOLEAN_XOR expr
+boolean_less_than_expr ::= expr BOOLEAN_LESS_THAN expr
+boolean_greater_than_expr ::= expr BOOLEAN_GREATER_THAN expr
 
 paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
 param_expr ::= OPEN_BRACE expr CLOSE_BRACE
+ternary_expr ::= expr QUESTION expr COLON expr
 
-fake ref_expr ::= expr? DOT IDENTIFIER
-simple_ref_expr ::= IDENTIFIER {extends=ref_expr elementType=ref_expr}
-qualification_expr ::= expr DOT IDENTIFIER {extends=ref_expr elementType=ref_expr}
+fake member_expr ::= expr? DOT IDENTIFIER
+simple_member_expr ::= IDENTIFIER {extends=member_expr elementType=member_expr}
+qualification_expr ::= expr DOT IDENTIFIER {extends=member_expr elementType=member_expr}
 
 primary_expr::=
 (   HEX_NUMBER
