@@ -36,7 +36,7 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
         val COMMENT = createTextAttributesKey("Assembly_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
         val BAD_CHARACTER = createTextAttributesKey("Assembly_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
         val LABEL = createTextAttributesKey("Assembly_LABEL", DefaultLanguageHighlighterColors.LABEL)
-        val MNEMONIC = createTextAttributesKey("Assembly_MNEMONIC", DefaultLanguageHighlighterColors.IDENTIFIER)
+        val OPCODE = createTextAttributesKey("Assembly_OPCODE", DefaultLanguageHighlighterColors.IDENTIFIER)
 
         private val highlights = HashMap<IElementType, Array<TextAttributesKey>>()
 
@@ -51,7 +51,7 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
             val numberKeys = arrayOf(NUMBER)
             val stringKeys = arrayOf(STRING)
             val parensKeys = arrayOf(PARENS)
-            val mnemonicKeys = arrayOf(MNEMONIC)
+            val mnemonicKeys = arrayOf(OPCODE)
 
             highlights[AssemblyTypes.CONTROL_COMMAND_ADDR] = controlCommandKeys
             highlights[AssemblyTypes.CONTROL_COMMAND_AL] = controlCommandKeys
@@ -152,7 +152,7 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
             highlights[AssemblyTypes.CLOSE_BRACE] = bracesKeys
             highlights[AssemblyTypes.COMMENT] = commentKeys
             highlights[AssemblyTypes.IDENTIFIER] = identifierKeys
-            highlights[AssemblyTypes.MNEMONIC] = mnemonicKeys
+            highlights[AssemblyTypes.OPCODE] = mnemonicKeys
             highlights[AssemblyTypes.COMMA] = separatorKeys
             highlights[AssemblyTypes.EQUAL] = separatorKeys
             highlights[AssemblyTypes.STRING] = stringKeys
