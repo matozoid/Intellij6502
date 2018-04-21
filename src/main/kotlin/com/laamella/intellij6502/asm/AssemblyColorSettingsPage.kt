@@ -54,6 +54,16 @@ class AssemblyColorSettingsPage : ColorSettingsPage {
     }
 
     companion object {
-        private val DESCRIPTORS = arrayOf(AttributesDescriptor("Separator", AssemblySyntaxHighlighter.SEPARATOR), AttributesDescriptor("String", AssemblySyntaxHighlighter.STRING), AttributesDescriptor("Identifier", AssemblySyntaxHighlighter.IDENTIFIER), AttributesDescriptor("Parentheses", AssemblySyntaxHighlighter.PARENS), AttributesDescriptor("Braces", AssemblySyntaxHighlighter.BRACES), AttributesDescriptor("Number", AssemblySyntaxHighlighter.NUMBER), AttributesDescriptor("Comment", AssemblySyntaxHighlighter.COMMENT), AttributesDescriptor("Label", AssemblySyntaxHighlighter.LABEL), AttributesDescriptor("Command", AssemblySyntaxHighlighter.CONTROL_COMMAND), AttributesDescriptor("Mnemonic", AssemblySyntaxHighlighter.OPCODE), AttributesDescriptor("Bad character", AssemblySyntaxHighlighter.BAD_CHARACTER))
+        private val DESCRIPTORS = arrayOf(
+                AttributesDescriptor("Separator", AssemblySyntaxHighlighter.SEPARATOR),
+                AttributesDescriptor("String", AssemblySyntaxHighlighter.STRING),
+                AttributesDescriptor("Identifier", AssemblySyntaxHighlighter.IDENTIFIER),
+                AttributesDescriptor("Parentheses", AssemblySyntaxHighlighter.PARENS),
+                AttributesDescriptor("Braces", AssemblySyntaxHighlighter.BRACES),
+                AttributesDescriptor("Number", AssemblySyntaxHighlighter.NUMBER),
+                AttributesDescriptor("Comment", AssemblySyntaxHighlighter.COMMENT),
+                AttributesDescriptor("Command", AssemblySyntaxHighlighter.CONTROL_COMMAND),
+                AttributesDescriptor("Mnemonic", AssemblySyntaxHighlighter.OPCODE),
+                AttributesDescriptor("Bad character", AssemblySyntaxHighlighter.BAD_CHARACTER))
     }
 }

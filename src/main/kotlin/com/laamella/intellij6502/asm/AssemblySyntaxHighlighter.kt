@@ -35,7 +35,6 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
         val NUMBER = createTextAttributesKey("Assembly_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         val COMMENT = createTextAttributesKey("Assembly_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
         val BAD_CHARACTER = createTextAttributesKey("Assembly_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
-        val LABEL = createTextAttributesKey("Assembly_LABEL", DefaultLanguageHighlighterColors.LABEL)
         val OPCODE = createTextAttributesKey("Assembly_OPCODE", DefaultLanguageHighlighterColors.IDENTIFIER)
 
         private val highlights = HashMap<IElementType, Array<TextAttributesKey>>()
@@ -47,7 +46,6 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
             val bracesKeys = arrayOf(BRACES)
             val identifierKeys = arrayOf(IDENTIFIER)
             val controlCommandKeys = arrayOf(CONTROL_COMMAND)
-            val labelKeys = arrayOf(LABEL)
             val numberKeys = arrayOf(NUMBER)
             val stringKeys = arrayOf(STRING)
             val parensKeys = arrayOf(PARENS)
@@ -156,7 +154,6 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
             highlights[AssemblyTypes.COMMA] = separatorKeys
             highlights[AssemblyTypes.EQUAL] = separatorKeys
             highlights[AssemblyTypes.STRING] = stringKeys
-            highlights[AssemblyTypes.LABEL] = labelKeys
             highlights[AssemblyTypes.HEX_NUMBER] = numberKeys
             highlights[AssemblyTypes.NUMBER] = numberKeys
             highlights[AssemblyTypes.BINARY_NUMBER] = numberKeys

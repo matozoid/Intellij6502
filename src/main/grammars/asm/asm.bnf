@@ -15,7 +15,7 @@
 	 extends(".*expr")=expr
 }
 
-AssemblyFile::= (line? EOL)*
+AssemblyFile::= (line EOL)* line?
 
 line ::= ((
 	symbol_definition_line |
@@ -25,13 +25,14 @@ line ::= ((
 	only_a_label_line)?
 	COMMENT?)
 
-symbol_definition_line ::=  ( LABEL? (IDENTIFIER|'*') IS expr
-							| LABEL IS expr
-							| LABEL compound_var_assignment expr )
-instruction_line ::=        LABEL? OPCODE operand?
-control_command_line ::=    LABEL? control_command
-user_command_line ::=       LABEL? (DOT|HEKJE) IDENTIFIER expressions?
-only_a_label_line ::=       LABEL
+symbol_definition_line ::=  ( (label|'*') IS expr
+							| label compound_var_assignment expr )
+instruction_line ::=        label? OPCODE operand?
+control_command_line ::=    label? control_command
+user_command_line ::=       label? (DOT|HEKJE) IDENTIFIER expressions?
+only_a_label_line ::=       label
+
+label ::= (IDENTIFIER COLON? | PLUS | MINUS)
 
 operand::= (
 	OPEN_PAREN expr CLOSE_PAREN COMMA IDENTIFIER |

@@ -210,7 +210,6 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 ".comment"                      { yybegin(BLOCK_COMMENT); return COMMENT; }
 "$"[0-9a-fA-F]+                 { return HEX_NUMBER; }
 [0-9]+                          { return NUMBER; }
-^({IDENTIFIER}:?|"+"|"-")       {return LABEL; }
 "\\"{IDENTIFIER}                { return PARAMETER_USAGE; }
 {EOL}                         { return EOL; }
 ({WHITE_SPACE})+              { return TokenType.WHITE_SPACE; }
