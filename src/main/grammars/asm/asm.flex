@@ -67,7 +67,6 @@ _6502_OPCODE={_6502_STANDARD_OPCODE}|{_6502_PSEUDO_OPCODE}|{_6502_ILLEGAL_OPCODE
 
 //(EOM)
 
-TYPE=address|bits|bool|bytes|code|dict|float|gap|int|list|str|tuple|type
 EOL=(\r|\n|\r\n)
 WHITE_SPACE=[\ \t\f]
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
@@ -204,6 +203,22 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 "tan("                          { return FUNCTION_TAN; }
 "tanh("                          { return FUNCTION_TANH; }
 "trunc("                          { return FUNCTION_TRUNC; }
+
+"address("                        { return TYPE_CONVERT_ADDRESS; }
+"bits("                           { return TYPE_CONVERT_BITS; }
+"bool("                           { return TYPE_CONVERT_BOOL; }
+"bytes("                          { return TYPE_CONVERT_BYTES; }
+"code("                           { return TYPE_CONVERT_CODE; }
+"dict("                           { return TYPE_CONVERT_DICT; }
+"float("                          { return TYPE_CONVERT_FLOAT; }
+"gap("                            { return TYPE_CONVERT_GAP; }
+"int("                            { return TYPE_CONVERT_INT; }
+"list("                           { return TYPE_CONVERT_LIST; }
+"str("                            { return TYPE_CONVERT_STR; }
+"tuple("                          { return TYPE_CONVERT_TUPLE; }
+"type("                           { return TYPE_CONVERT_TYPE; }
+
+
 "in"                            { return IN; }
 // Ugh
 //"x"                          { return REPEAT; }
@@ -235,6 +250,8 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 ")"                           { return CLOSE_PAREN; }
 "{"                           { return OPEN_BRACE; }
 "}"                           { return CLOSE_BRACE; }
+"["                           { return OPEN_BRACKET; }
+"]"                           { return CLOSE_BRACKET; }
 ","                           { return COMMA; }
 ".."                          { return CONCAT; }
 "."                           { return DOT; }
@@ -278,7 +295,6 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 ";"[^\r\n]*                   { return COMMENT; }
 "\""[^\"]*"\""                { return STRING; }
 {_6502_OPCODE}                { return OPCODE; }
-{TYPE}                        { return TYPE; }
 {IDENTIFIER}                  { return IDENTIFIER; }
 .                             { return TokenType.BAD_CHARACTER; }
 

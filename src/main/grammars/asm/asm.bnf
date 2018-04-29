@@ -17,16 +17,14 @@
 
 AssemblyFile::= (line EOL)* line?
 
-line ::= ((
-	symbol_definition_line |
-	instruction_line |
-	control_command_line |
-	user_command_line |
-	only_a_label_line)?
-	COMMENT?)
+line ::= (
+  symbol_assignment_line
+| instruction_line
+| control_command_line
+| user_command_line
+| only_a_label_line)? COMMENT?
 
-symbol_definition_line ::=  ( (label|'*') IS expr
-							| label compound_var_assignment expr )
+symbol_assignment_line ::=  assignment
 instruction_line ::=        label? OPCODE operand?
 control_command_line ::=    label? control_command
 user_command_line ::=       label? (DOT|HEKJE) IDENTIFIER expressions?
@@ -47,7 +45,8 @@ expressions::=expr (',' expr)*
 params::=param (',' param)*
 param::=IDENTIFIER (IS expr)?
 
-compound_var_assignment ::=
+assignment ::= (label|TIMES) (
+		IS|
 		ADD_COMPOUND|
         SUBTRACT_COMPOUND|
         MULTIPLY_COMPOUND|      
@@ -65,7 +64,7 @@ compound_var_assignment ::=
         SMALLER_COMPOUND|       
         GREATER_COMPOUND|       
         REPEAT_COMPOUND|        
-        MEMBER_COMPOUND
+        MEMBER_COMPOUND) expr
 
 control_command::=(
   CONTROL_COMMAND_AL
@@ -108,7 +107,7 @@ control_command::=(
 | CONTROL_COMMAND_EOR expr
 | CONTROL_COMMAND_ERROR expressions
 | CONTROL_COMMAND_FI
-| CONTROL_COMMAND_FOR expr COMMA expr COMMA expr
+| CONTROL_COMMAND_FOR assignment COMMA expr COMMA assignment
 | CONTROL_COMMAND_FUNCTION        params
 | CONTROL_COMMAND_GOTO IDENTIFIER
 | CONTROL_COMMAND_HERE
@@ -184,7 +183,7 @@ private unary_group ::= positive_expr | negative_expr | invert_expr | not_expr |
 | force_8_bit_address_expr | force_16_bit_address_expr | force_24_bit_address_expr
 private equality_group ::= compare_expr | equal_expr | not_equal_expr | less_than_expr | greater_than_expr | less_equal_expr | greater_equal_expr
 private boolean_group ::= boolean_and_expr | boolean_or_expr | boolean_xor_expr | boolean_greater_than_expr | boolean_less_than_expr
-private primary_group ::= simple_member_expr | function_call_expr | paren_expr | param_expr | primary_expr | ternary_expr
+private primary_group ::= simple_member_expr | function_call_expr | type_convert_expr | paren_expr | param_expr | primary_expr | ternary_expr | list_expr | list_access_expr
 
 // public rules for each expression
 negative_expr ::= MINUS expr? // doubles as - label
@@ -233,8 +232,10 @@ boolean_less_than_expr ::= expr BOOLEAN_LESS_THAN expr
 boolean_greater_than_expr ::= expr BOOLEAN_GREATER_THAN expr
 
 paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
+list_access_expr ::= expr OPEN_BRACKET expr CLOSE_BRACKET
 param_expr ::= OPEN_BRACE expr CLOSE_BRACE
 ternary_expr ::= expr QUESTION expr COLON expr
+list_expr ::= OPEN_BRACKET expr (COMMA expr)* CLOSE_BRACKET
 
 fake member_expr ::= expr? DOT IDENTIFIER
 simple_member_expr ::= IDENTIFIER {extends=member_expr elementType=member_expr}
@@ -247,7 +248,6 @@ primary_expr::=
 |   control_command
 |   PARAMETER_USAGE
 |   OPCODE
-|   TYPE
 |   FUNCTION
 )
 
@@ -290,7 +290,20 @@ function_call_expr ::= (
 | FUNCTION_TAN expr CLOSE_PAREN
 | FUNCTION_TANH expr CLOSE_PAREN
 | FUNCTION_TRUNC expr CLOSE_PAREN
-
-
-
 )
+
+type_convert_expr ::= (
+ TYPE_CONVERT_ADDRESS
+|TYPE_CONVERT_BITS
+|TYPE_CONVERT_BOOL
+|TYPE_CONVERT_BYTES
+|TYPE_CONVERT_CODE
+|TYPE_CONVERT_DICT
+|TYPE_CONVERT_FLOAT
+|TYPE_CONVERT_GAP
+|TYPE_CONVERT_INT
+|TYPE_CONVERT_LIST
+|TYPE_CONVERT_STR
+|TYPE_CONVERT_TUPLE
+|TYPE_CONVERT_TYPE
+) expr CLOSE_PAREN

@@ -60,6 +60,7 @@ class AssemblyColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Identifier", AssemblySyntaxHighlighter.IDENTIFIER),
                 AttributesDescriptor("Parentheses", AssemblySyntaxHighlighter.PARENS),
                 AttributesDescriptor("Braces", AssemblySyntaxHighlighter.BRACES),
+                AttributesDescriptor("Brackets", AssemblySyntaxHighlighter.BRACKETS),
                 AttributesDescriptor("Number", AssemblySyntaxHighlighter.NUMBER),
                 AttributesDescriptor("Comment", AssemblySyntaxHighlighter.COMMENT),
                 AttributesDescriptor("Command", AssemblySyntaxHighlighter.CONTROL_COMMAND),

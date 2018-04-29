@@ -31,6 +31,7 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
         val CONTROL_COMMAND = createTextAttributesKey("Assembly_COMMAND", DefaultLanguageHighlighterColors.KEYWORD)
         val PARENS = createTextAttributesKey("Assembly_PARENS", DefaultLanguageHighlighterColors.PARENTHESES)
         val BRACES = createTextAttributesKey("Assembly_BRACES", DefaultLanguageHighlighterColors.BRACES)
+        val BRACKETS = createTextAttributesKey("Assembly_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS)
         val STRING = createTextAttributesKey("Assembly_STRING", DefaultLanguageHighlighterColors.STRING)
         val NUMBER = createTextAttributesKey("Assembly_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         val COMMENT = createTextAttributesKey("Assembly_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
@@ -44,6 +45,7 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
             val separatorKeys = arrayOf(SEPARATOR)
             val commentKeys = arrayOf(COMMENT)
             val bracesKeys = arrayOf(BRACES)
+            val bracketsKeys = arrayOf(BRACKETS)
             val identifierKeys = arrayOf(IDENTIFIER)
             val controlCommandKeys = arrayOf(CONTROL_COMMAND)
             val numberKeys = arrayOf(NUMBER)
@@ -148,6 +150,8 @@ class AssemblySyntaxHighlighter : SyntaxHighlighterBase() {
             highlights[AssemblyTypes.CLOSE_PAREN] = parensKeys
             highlights[AssemblyTypes.OPEN_BRACE] = bracesKeys
             highlights[AssemblyTypes.CLOSE_BRACE] = bracesKeys
+            highlights[AssemblyTypes.OPEN_BRACKET] = bracketsKeys
+            highlights[AssemblyTypes.CLOSE_BRACKET] = bracketsKeys
             highlights[AssemblyTypes.COMMENT] = commentKeys
             highlights[AssemblyTypes.IDENTIFIER] = identifierKeys
             highlights[AssemblyTypes.OPCODE] = mnemonicKeys
