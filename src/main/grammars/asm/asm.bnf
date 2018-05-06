@@ -1,18 +1,18 @@
 {
-  parserClass="com.laamella.intellij6502.asm.AssemblyParser"
+	parserClass="com.laamella.intellij6502.asm.AssemblyParser"
 
-  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+	extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
-  psiClassPrefix="Assembly"
-  psiImplClassSuffix="Impl"
-  psiPackage="com.laamella.intellij6502.asm.psi"
-  psiImplPackage="com.laamella.intellij6502.asm.psi.impl"
+	psiClassPrefix="Assembly"
+	psiImplClassSuffix="Impl"
+	psiPackage="com.laamella.intellij6502.asm.psi"
+	psiImplPackage="com.laamella.intellij6502.asm.psi.impl"
 
-  elementTypeHolderClass="com.laamella.intellij6502.asm.psi.AssemblyTypes"
-  elementTypeClass="com.laamella.intellij6502.asm.psi.AssemblyElementType"
-  tokenTypeClass="com.laamella.intellij6502.asm.psi.AssemblyTokenType"
+	elementTypeHolderClass="com.laamella.intellij6502.asm.psi.AssemblyTypes"
+	elementTypeClass="com.laamella.intellij6502.asm.psi.AssemblyElementType"
+	tokenTypeClass="com.laamella.intellij6502.asm.psi.AssemblyTokenType"
 
-	 extends(".*expr")=expr
+	extends(".*expr")=expr
 }
 
 AssemblyFile::= (line EOL)* line?
@@ -22,7 +22,9 @@ line ::= (
 | instruction_line
 | control_command_line
 | user_command_line
-| only_a_label_line)? COMMENT?
+| only_a_label_line)? COMMENT? {pin=1 recoverWhile=line_recover}
+
+private line_recover::=!EOL
 
 symbol_assignment_line ::=  assignment
 instruction_line ::=        label? OPCODE operand?
