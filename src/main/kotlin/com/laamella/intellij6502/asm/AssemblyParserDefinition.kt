@@ -11,9 +11,8 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import com.laamella.intellij6502.asm.AssemblyParser
 import com.laamella.intellij6502.asm.psi.AssemblyFile
-import com.laamella.intellij6502.asm.psi.AssemblyTypes
+import com.laamella.intellij6502.asm.psi.AssemblyTypes.*
 
 class AssemblyParserDefinition : ParserDefinition {
 
@@ -30,7 +29,7 @@ class AssemblyParserDefinition : ParserDefinition {
     }
 
     override fun getStringLiteralElements(): TokenSet {
-        return TokenSet.create(AssemblyTypes.STRING)
+        return TokenSet.create(STRING_DOUBLE_QUOTED, STRING_SINGLE_QUOTED)
     }
 
     override fun createParser(project: Project): PsiParser {
@@ -50,12 +49,12 @@ class AssemblyParserDefinition : ParserDefinition {
     }
 
     override fun createElement(node: ASTNode): PsiElement {
-        return AssemblyTypes.Factory.createElement(node)
+        return Factory.createElement(node)
     }
 
     companion object {
         val WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE)
-        val COMMENTS = TokenSet.create(AssemblyTypes.COMMENT)
+        val COMMENTS = TokenSet.create(COMMENT)
 
         val FILE = IFileElementType(AssemblyLanguage.INSTANCE)
     }

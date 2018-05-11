@@ -32,6 +32,12 @@ public class AssemblyLexerTest {
         assertLexed("opcode='lda' number='1'", prog);
     }
 
+    @Test
+    public void eee() throws IOException {
+        String prog = "ldx #size(zpcode)-1";
+        assertLexed("opcode='ldx' hekje='#' identifier='size' open_paren='(' identifier='zpcode' close_paren=')' minus='-' number='1'", prog);
+    }
+
     private void assertLexed(String expected, String prog) throws IOException {
         AssemblyLexer lexer = new AssemblyLexer(null);
         lexer.reset(prog, 0, prog.length(), 0);

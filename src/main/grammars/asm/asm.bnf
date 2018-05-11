@@ -26,7 +26,7 @@ line ::= (
 
 private line_recover::=!EOL
 
-symbol_assignment_line ::=  assignment
+symbol_assignment_line ::=  (label|TIMES) assignment
 instruction_line ::=        label? OPCODE operand?
 control_command_line ::=    label? control_command
 user_command_line ::=       label? (DOT|HEKJE) IDENTIFIER expressions?
@@ -44,10 +44,7 @@ operand::= (
 
 expressions::=expr (',' expr)*
 
-params::=param (',' param)*
-param::=IDENTIFIER (IS expr)?
-
-assignment ::= (label|TIMES) (
+assignment ::= (
 		IS|
 		ADD_COMPOUND|
         SUBTRACT_COMPOUND|
@@ -68,174 +65,43 @@ assignment ::= (label|TIMES) (
         REPEAT_COMPOUND|        
         MEMBER_COMPOUND) expr
 
-control_command::=(
-  CONTROL_COMMAND_AL
-| CONTROL_COMMAND_ALIGN           expressions (COMMA any_number)?
-| CONTROL_COMMAND_AS
-| CONTROL_COMMAND_ASSERT
-| CONTROL_COMMAND_AUTSIZ
-| CONTROL_COMMAND_BEND
-| CONTROL_COMMAND_BINARY STRING (COMMA any_number (COMMA any_number)?)?
-| CONTROL_COMMAND_BINCLUDE STRING
-| CONTROL_COMMAND_BLOCK
-| CONTROL_COMMAND_BREAK
-| CONTROL_COMMAND_CASE            expressions
-| CONTROL_COMMAND_CDEF expressions // could be more exact
-| CONTROL_COMMAND_CERROR          expressions // could be more exact
-| CONTROL_COMMAND_CHECK
-| CONTROL_COMMAND_CONTINUE
-| CONTROL_COMMAND_CPU expr
-| CONTROL_COMMAND_CWARN expressions // could be more exact
-| CONTROL_COMMAND_DATABANK expr
-| CONTROL_COMMAND_DEFAULT
-| CONTROL_COMMAND_DPAGE expr
-| CONTROL_COMMAND_DSECTION IDENTIFIER
-| CONTROL_COMMAND_DSTRUCT expressions // could be more exact
-| CONTROL_COMMAND_DUNION expressions // could be more exact
-| CONTROL_COMMAND_EDEF            expressions // could be more exact
-| CONTROL_COMMAND_ELSE
-| CONTROL_COMMAND_ELSIF expr
-| CONTROL_COMMAND_ENC STRING
-| CONTROL_COMMAND_END
-| CONTROL_COMMAND_ENDF expressions?
-| CONTROL_COMMAND_ENDIF
-| CONTROL_COMMAND_ENDM expressions?
-| CONTROL_COMMAND_ENDN
-| CONTROL_COMMAND_ENDP
-| CONTROL_COMMAND_ENDS expressions?
-| CONTROL_COMMAND_ENDSWITCH
-| CONTROL_COMMAND_ENDU
-| CONTROL_COMMAND_ENDWEAK
-| CONTROL_COMMAND_EOR expr
-| CONTROL_COMMAND_ERROR expressions
-| CONTROL_COMMAND_FI
-| CONTROL_COMMAND_FOR assignment COMMA expr COMMA assignment
-| CONTROL_COMMAND_FUNCTION        params
-| CONTROL_COMMAND_GOTO IDENTIFIER
-| CONTROL_COMMAND_HERE
-| CONTROL_COMMAND_HIDEMAC
-| CONTROL_COMMAND_IF expr
-| CONTROL_COMMAND_IFEQ expr
-| CONTROL_COMMAND_IFMI expr
-| CONTROL_COMMAND_IFNE expr
-| CONTROL_COMMAND_IFPL expr
-| CONTROL_COMMAND_INCLUDE STRING
-| CONTROL_COMMAND_LBL
-| CONTROL_COMMAND_LOGICAL         expr
-| CONTROL_COMMAND_MACRO           params?
-| CONTROL_COMMAND_MANSIZ
-| CONTROL_COMMAND_NAMESPACE       expressions? // can't find docs
-| CONTROL_COMMAND_NEXT
-| CONTROL_COMMAND_OFFS            expr
-| CONTROL_COMMAND_OPTION          IDENTIFIER IS expr
-| CONTROL_COMMAND_PAGE
-| CONTROL_COMMAND_PEND
-| CONTROL_COMMAND_PROC
-| CONTROL_COMMAND_PROFF
-| CONTROL_COMMAND_PRON
-| CONTROL_COMMAND_REPT            expr
-| CONTROL_COMMAND_SECTION         IDENTIFIER
-| CONTROL_COMMAND_SEED            expr
-| CONTROL_COMMAND_SEGMENT         params?
-| CONTROL_COMMAND_SEND            IDENTIFIER?
-| CONTROL_COMMAND_SHOWMAC
-| CONTROL_COMMAND_STRUCT          params?
-| CONTROL_COMMAND_SWITCH          expr
-| CONTROL_COMMAND_UNION           params?
-| CONTROL_COMMAND_VAR             expr
-| CONTROL_COMMAND_WARN            expressions
-| CONTROL_COMMAND_WEAK
-| CONTROL_COMMAND_XL
-| CONTROL_COMMAND_XS
-// 4.2 Dumping data
-// 4.2.1 Storing numeric values
-| CONTROL_COMMAND_LONG            (QUESTION | expressions)
-| CONTROL_COMMAND_SINT            (QUESTION | expressions)
-| CONTROL_COMMAND_LINT            (QUESTION | expressions)
-| CONTROL_COMMAND_WORD            (QUESTION | expressions)
-| CONTROL_COMMAND_FILL            (QUESTION | expressions) // could be more exact
-| CONTROL_COMMAND_ADDR            (QUESTION | expressions)
-| CONTROL_COMMAND_BYTE            (QUESTION | expressions)
-| CONTROL_COMMAND_CHAR            (QUESTION | expressions)
-| CONTROL_COMMAND_DINT            (QUESTION | expressions)
-| CONTROL_COMMAND_DWORD           (QUESTION | expressions)
-// 4.2.2 Storing string values
-| CONTROL_COMMAND_NULL            (QUESTION | expressions)
-| CONTROL_COMMAND_TEXT            (QUESTION | expressions)
-| CONTROL_COMMAND_PTEXT           (QUESTION | expressions)
-| CONTROL_COMMAND_RTA             (QUESTION | expressions)
-| CONTROL_COMMAND_SHIFT           (QUESTION | expressions)
-| CONTROL_COMMAND_SHIFTL          (QUESTION | expressions)
+control_command::=DOT IDENTIFIER (control_command_param (COMMA control_command_param)*)?
+control_command_param::=(QUESTION|IDENTIFIER assignment|expr)
 
-)
-
-expr ::=  add_group
+expr ::=  unary_group
+            | add_group
   | mul_group
-  | unary_group
   | equality_group
   | boolean_group
   | qualification_expr
   | primary_group
 
 // private rules to define operators with the same priority
-private add_group ::= add_expr | subtract_expr | binary_or_expr | concat_expr | in_expr
-private mul_group ::= multiply_expr | raise_to_power_expr | divide_expr | modulo_expr | binary_and_expr | binary_xor_expr | shift_left_expr | shift_right_expr
-private unary_group ::= positive_expr | negative_expr | invert_expr | not_expr | lower_byte_expr | higher_byte_expr | bank_byte_expr | bank_byte_2_expr | convert_to_arguments_expr
-| lower_word_expr | higher_word_expr | lower_byte_swapped_word_expr
-| force_8_bit_address_expr | force_16_bit_address_expr | force_24_bit_address_expr
-private equality_group ::= compare_expr | equal_expr | not_equal_expr | less_than_expr | greater_than_expr | less_equal_expr | greater_equal_expr
-private boolean_group ::= boolean_and_expr | boolean_or_expr | boolean_xor_expr | boolean_greater_than_expr | boolean_less_than_expr
-private primary_group ::= simple_member_expr | function_call_expr | type_convert_expr | paren_expr | param_expr | primary_expr | ternary_expr | list_expr | list_access_expr
+private add_group ::= add_expr
+private mul_group ::= mul_expr
+private unary_group ::= unary_or_label_expr | unary_expr | list_access_expr | function_call_expr | simple_member_expr
+private equality_group ::= equality_expr
+private boolean_group ::= boolean_expr
+private primary_group ::= tuple_expr | dictionary_expr | primary_expr | ternary_expr | list_expr
 
 // public rules for each expression
-negative_expr ::= MINUS expr? // doubles as - label
-positive_expr ::= PLUS expr? // doubles as + label
-invert_expr ::= TILDE expr
-not_expr ::= EXCLAMATION expr
-convert_to_arguments_expr ::= TIMES expr
-lower_byte_expr ::= LESS expr
-higher_byte_expr ::= GREATER expr
-lower_word_expr ::= LOWER_WORD expr
-lower_byte_swapped_word_expr ::= LOWER_BYTE_SWAPPED_WORD expr
-higher_word_expr ::= HIGHER_WORD expr
-bank_byte_expr ::= DAKJE expr
-bank_byte_2_expr ::= BANK_BYTE expr
-force_8_bit_address_expr ::= FORCE_8_BIT_ADDRESS expr
-force_16_bit_address_expr ::= FORCE_16_BIT_ADDRESS expr
-force_24_bit_address_expr ::= FORCE_24_BIT_ADDRESS expr
+unary_or_label_expr ::= (PLUS|MINUS) expr?
+unary_expr ::=(TILDE|EXCLAMATION|TIMES|LESS|GREATER|LOWER_WORD|LOWER_BYTE_SWAPPED_WORD|HIGHER_WORD|DAKJE|BANK_BYTE|FORCE_8_BIT_ADDRESS|FORCE_16_BIT_ADDRESS|FORCE_24_BIT_ADDRESS) expr
 
-divide_expr ::= expr DIV expr
-multiply_expr ::= expr TIMES expr
-raise_to_power_expr ::= expr POW expr
-modulo_expr ::= expr MODULO expr
-binary_and_expr ::= expr AND expr
-binary_xor_expr ::= expr DAKJE expr
-shift_left_expr ::= expr SHIFT_LEFT expr
-shift_right_expr ::= expr SHIFT_RIGHT expr
-concat_expr ::= expr CONCAT expr
-in_expr ::= expr IN expr
+mul_expr ::= expr (DIV|TIMES|POW|MODULO|AND|DAKJE|SHIFT_LEFT|SHIFT_RIGHT) expr
 
-subtract_expr ::= expr MINUS expr
-add_expr ::= expr PLUS expr
-binary_or_expr ::= expr PIPE expr
+add_expr ::= expr (MINUS|PLUS|PIPE|CONCAT|IN) expr
 
-compare_expr ::= expr COMPARE expr
-equal_expr ::= expr EQUAL expr
-not_equal_expr ::= expr NOT_EQUAL expr
-less_than_expr ::= expr LESS expr
-greater_than_expr ::= expr GREATER expr
-less_equal_expr ::= expr LESS_EQUAL expr
-greater_equal_expr ::= expr GREATER_EQUAL expr
+equality_expr ::= expr (COMPARE|EQUAL|NOT_EQUAL|LESS|GREATER|LESS_EQUAL|GREATER_EQUAL) expr
 
-boolean_and_expr ::= expr BOOLEAN_AND expr
-boolean_or_expr ::= expr BOOLEAN_OR expr
-boolean_xor_expr ::= expr BOOLEAN_XOR expr
-boolean_less_than_expr ::= expr BOOLEAN_LESS_THAN expr
-boolean_greater_than_expr ::= expr BOOLEAN_GREATER_THAN expr
+boolean_expr ::= expr (BOOLEAN_AND|BOOLEAN_OR|BOOLEAN_XOR|BOOLEAN_GREATER_THAN|BOOLEAN_LESS_THAN) expr
 
-paren_expr ::= OPEN_PAREN expr CLOSE_PAREN
-list_access_expr ::= expr OPEN_BRACKET expr CLOSE_BRACKET
-param_expr ::= OPEN_BRACE expr CLOSE_BRACE
+tuple_expr ::= OPEN_PAREN expressions CLOSE_PAREN
+list_access_expr ::= expr OPEN_BRACKET
+		(expr? COLON expr? COLON expr? | expr? COLON expr? | expr?)
+		CLOSE_BRACKET
+dictionary_expr ::= OPEN_BRACE (dictionary_entry (COMMA dictionary_entry)*)? CLOSE_BRACE
+dictionary_entry ::=expr? COLON expr
 ternary_expr ::= expr QUESTION expr COLON expr
 list_expr ::= OPEN_BRACKET expr (COMMA expr)* CLOSE_BRACKET
 
@@ -246,8 +112,8 @@ qualification_expr ::= expr DOT IDENTIFIER {extends=member_expr elementType=memb
 primary_expr::=
 (   any_number
 |   IDENTIFIER
-|   STRING
-|   control_command
+|   STRING_SINGLE_QUOTED
+|   STRING_DOUBLE_QUOTED
 |   PARAMETER_USAGE
 |   OPCODE
 |   FUNCTION
@@ -255,56 +121,5 @@ primary_expr::=
 
 any_number ::= (NUMBER|HEX_NUMBER|BINARY_NUMBER)
 
-function_call_expr ::= (
-  FUNCTION_ABS expr CLOSE_PAREN
-| FUNCTION_ACOS expr CLOSE_PAREN
-| FUNCTION_ALL expr CLOSE_PAREN
-| FUNCTION_ANY expr CLOSE_PAREN
-| FUNCTION_ASIN expr CLOSE_PAREN
-| FUNCTION_ATAN expr COMMA expr CLOSE_PAREN
-| FUNCTION_ATAN2 expr CLOSE_PAREN
-| FUNCTION_CBRT expr CLOSE_PAREN
-| FUNCTION_CEIL expr CLOSE_PAREN
-| FUNCTION_COS expr CLOSE_PAREN
-| FUNCTION_COSH expr CLOSE_PAREN
-| FUNCTION_DEG expr CLOSE_PAREN
-| FUNCTION_EXP expr CLOSE_PAREN
-| FUNCTION_FLOOR expr CLOSE_PAREN
-| FUNCTION_FORMAT STRING COMMA expr (COMMA expr)* CLOSE_PAREN
-| FUNCTION_FRAC expr CLOSE_PAREN
-| FUNCTION_HYPOT expr COMMA expr CLOSE_PAREN
-| FUNCTION_LEN expr CLOSE_PAREN
-| FUNCTION_LOG expr CLOSE_PAREN
-| FUNCTION_LOG10 expr CLOSE_PAREN
-| FUNCTION_POW expr COMMA expr CLOSE_PAREN
-| FUNCTION_RAD expr CLOSE_PAREN
-| FUNCTION_RANDOM expr (COMMA expr)* CLOSE_PAREN
-| FUNCTION_RANGE expr (COMMA expr)* CLOSE_PAREN
-| FUNCTION_REPR expr CLOSE_PAREN
-| FUNCTION_ROUND expr CLOSE_PAREN
-| FUNCTION_SIGN expr CLOSE_PAREN
-| FUNCTION_SIN expr CLOSE_PAREN
-| FUNCTION_SINH expr CLOSE_PAREN
-| FUNCTION_SIZE expr CLOSE_PAREN
-| FUNCTION_SORT list_expr CLOSE_PAREN
-| FUNCTION_SQRT expr CLOSE_PAREN
-| FUNCTION_TAN expr CLOSE_PAREN
-| FUNCTION_TANH expr CLOSE_PAREN
-| FUNCTION_TRUNC expr CLOSE_PAREN
-)
-
-type_convert_expr ::= (
- TYPE_CONVERT_ADDRESS
-|TYPE_CONVERT_BITS
-|TYPE_CONVERT_BOOL
-|TYPE_CONVERT_BYTES
-|TYPE_CONVERT_CODE
-|TYPE_CONVERT_DICT
-|TYPE_CONVERT_FLOAT
-|TYPE_CONVERT_GAP
-|TYPE_CONVERT_INT
-|TYPE_CONVERT_LIST
-|TYPE_CONVERT_STR
-|TYPE_CONVERT_TUPLE
-|TYPE_CONVERT_TYPE
-) expr CLOSE_PAREN
+left function_call_expr ::= IDENTIFIER OPEN_PAREN (function_call_param (COMMA function_call_param)*)? CLOSE_PAREN
+function_call_param::=expr
