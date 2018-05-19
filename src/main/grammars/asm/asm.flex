@@ -70,6 +70,7 @@ _6502_OPCODE={_6502_STANDARD_OPCODE}|{_6502_PSEUDO_OPCODE}|{_6502_ILLEGAL_OPCODE
 EOL=(\r|\n|\r\n)
 WHITE_SPACE=[\ \t\f]
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
+MANTISSA=[ep][0-9]+
 
 %x BLOCK_COMMENT
 %%
@@ -78,8 +79,8 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 // Ugh
 //"x"                          { return REPEAT; }
 ".comment"                      { yybegin(BLOCK_COMMENT); return COMMENT; }
-"$"[0-9a-fA-F]+                 { return HEX_NUMBER; }
-[0-9]+                          { return NUMBER; }
+"$"[0-9a-fA-F][0-9a-fA-F_\.]*{MANTISSA}?     { return HEX_NUMBER; }
+[0-9][0-9_\.]*{MANTISSA}?                    { return NUMBER; }
 "\\"{IDENTIFIER}                { return PARAMETER_USAGE; }
 {EOL}                         { return EOL; }
 ({WHITE_SPACE})+              { return TokenType.WHITE_SPACE; }
@@ -101,6 +102,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 ">?="	                      { return GREATER_COMPOUND; }
 "x="	                      { return REPEAT_COMPOUND; }
 ".="	                      { return MEMBER_COMPOUND; }
+":="                          { return COLON_IS; }
 "("                           { return OPEN_PAREN; }
 ")"                           { return CLOSE_PAREN; }
 "{"                           { return OPEN_BRACE; }
@@ -136,7 +138,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 "^^"                          { return BOOLEAN_XOR; }
 "<?"                          { return BOOLEAN_LESS_THAN; }
 ">?"                          { return BOOLEAN_GREATER_THAN; }
-"%"[01]+                      { return BINARY_NUMBER; }
+"%"[01][01_\.]*{MANTISSA}?      { return BINARY_NUMBER; }
 "%"                           { return MODULO; }
 "=="                          { return EQUAL; }
 "!="                          { return NOT_EQUAL; }
@@ -148,8 +150,8 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 "@w"                          { return FORCE_16_BIT_ADDRESS; }
 "@l"                          { return FORCE_24_BIT_ADDRESS; }
 ";"[^\r\n]*                   { return COMMENT; }
-"\""[^\"]*"\""                { return STRING_DOUBLE_QUOTED; }
-("'"[^']*"'")+                { return STRING_SINGLE_QUOTED; }
+[bslnp]?("\""[^\"]*"\"")+             { return STRING_DOUBLE_QUOTED; }
+[bslnp]?("'"[^']*"'")+                { return STRING_SINGLE_QUOTED; }
 {_6502_OPCODE}                { return OPCODE; }
 {IDENTIFIER}                  { return IDENTIFIER; }
 .                             { return TokenType.BAD_CHARACTER; }

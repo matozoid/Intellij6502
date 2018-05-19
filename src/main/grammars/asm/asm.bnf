@@ -46,6 +46,7 @@ expressions::=expr (',' expr)*
 
 assignment ::= (
 		IS|
+		COLON_IS|
 		ADD_COMPOUND|
         SUBTRACT_COMPOUND|
         MULTIPLY_COMPOUND|      
@@ -98,10 +99,10 @@ boolean_expr ::= expr (BOOLEAN_AND|BOOLEAN_OR|BOOLEAN_XOR|BOOLEAN_GREATER_THAN|B
 
 tuple_expr ::= OPEN_PAREN expressions CLOSE_PAREN
 list_access_expr ::= expr OPEN_BRACKET
-		(expr? COLON expr? COLON expr? | expr? COLON expr? | expr?)
+		(expr? COLON COMMA? expr? COLON expr? | expr? COLON COMMA? expr? | expr?)
 		CLOSE_BRACKET
 dictionary_expr ::= OPEN_BRACE (dictionary_entry (COMMA dictionary_entry)*)? CLOSE_BRACE
-dictionary_entry ::=expr? COLON expr
+dictionary_entry ::=expr? COLON expr?
 ternary_expr ::= expr QUESTION expr COLON expr
 list_expr ::= OPEN_BRACKET expr (COMMA expr)* CLOSE_BRACKET
 
@@ -111,7 +112,6 @@ qualification_expr ::= expr DOT IDENTIFIER {extends=member_expr elementType=memb
 
 primary_expr::=
 (   any_number
-|   IDENTIFIER
 |   STRING_SINGLE_QUOTED
 |   STRING_DOUBLE_QUOTED
 |   PARAMETER_USAGE
