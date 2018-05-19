@@ -121,5 +121,5 @@ primary_expr::=
 
 any_number ::= (NUMBER|HEX_NUMBER|BINARY_NUMBER)
 
-left function_call_expr ::= IDENTIFIER OPEN_PAREN (function_call_param (COMMA function_call_param)*)? CLOSE_PAREN
+function_call_expr ::= IDENTIFIER OPEN_PAREN (function_call_param (COMMA function_call_param)*)? CLOSE_PAREN
 function_call_param::=expr
