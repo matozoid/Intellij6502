@@ -9,17 +9,9 @@ Oh no!
 At least I want to make it do some highlighting and formatting for assembly files.
 
 Currently there:
-* Reasonably okay syntax hightlighting for 64tass .asm files
+* Reasonably okay syntax highlighting for 64tass .asm files.
+* CTRL-H toggles the number under the cursor from hex to binary to decimal.
 
 Not there:
 * [All of this](https://github.com/matozoid/Intellij6502/issues)
 
-Really, it's the result of going through half of [this documentation](http://www.jetbrains.org/intellij/sdk/docs/tutorials/custom_language_support_tutorial.html)
-and messing with the grammar until it worked reasonably well.
-
-Do you think it's bad?
-Come help improve it!
-Open issues and PR's and we'll improve this thing.
-
-(If you're thinking of starting your own or forking this:
-please communicate to avoid having multiple plugins that do the same thing in intellij.)

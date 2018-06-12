@@ -2,7 +2,7 @@ import org.jetbrains.grammarkit.tasks.GenerateLexer
 import org.jetbrains.grammarkit.tasks.GenerateParser
 
 buildscript {
-    ext.kotlin_version = '1.2.31'
+    ext.kotlin_version = '1.2.41'
 
     repositories {
         mavenCentral()
@@ -31,6 +31,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    testCompile 'junit:junit:4.12'
 }
 
 sourceSets {

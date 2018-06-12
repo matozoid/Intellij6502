@@ -6,8 +6,6 @@ import com.intellij.psi.FileViewProvider
 import com.laamella.intellij6502.asm.AssemblyFileType
 import com.laamella.intellij6502.asm.AssemblyLanguage
 
-import javax.swing.*
-
 class AssemblyFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, AssemblyLanguage.INSTANCE) {
 
     override fun getFileType(): FileType {

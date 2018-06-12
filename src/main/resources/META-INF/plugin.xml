@@ -28,9 +28,18 @@
         <lang.syntaxHighlighterFactory language="asm"
                                        implementationClass="com.laamella.intellij6502.asm.AssemblySyntaxHighlighterFactory"/>
         <lang.commenter language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyCommenter"/>
+        <lang.braceMatcher language="asm" implementationClass="com.laamella.intellij6502.asm.AssemblyPairedBraceMatcher"/>
         <moduleType id="ASSEMBLY_MODULE" implementationClass="com.laamella.intellij6502.asm.AssemblyModule"/>
         <moduleBuilder builderClass="com.laamella.intellij6502.asm.AssemblyModuleBuilder"/>
 
         <colorSettingsPage implementation="com.laamella.intellij6502.asm.AssemblyColorSettingsPage"/>
     </extensions>
+    <actions>
+        <action id="convert-numerical-base" class="com.laamella.intellij6502.asm.ConvertNumericalBase"
+                text="Convert base of number"
+                description="Changes selected number between hexadecimal, decimal, and binary">
+            <add-to-group group-id="EditMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl H"/>
+        </action>
+    </actions>
 </idea-plugin>
