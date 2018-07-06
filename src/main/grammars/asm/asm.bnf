@@ -89,22 +89,22 @@ private primary_group ::= tuple_expr | dictionary_expr | primary_expr | ternary_
 unary_or_label_expr ::= (PLUS|MINUS) expr?
 unary_expr ::=(TILDE|EXCLAMATION|TIMES|LESS|GREATER|LOWER_WORD|LOWER_BYTE_SWAPPED_WORD|HIGHER_WORD|DAKJE|BANK_BYTE|FORCE_8_BIT_ADDRESS|FORCE_16_BIT_ADDRESS|FORCE_24_BIT_ADDRESS) expr
 
-mul_expr ::= expr (DIV|TIMES|POW|MODULO|AND|DAKJE|SHIFT_LEFT|SHIFT_RIGHT) expr
+mul_expr ::= expr (DIV|TIMES|POW|MODULO|AND|DAKJE|SHIFT_LEFT|SHIFT_RIGHT) EOL? expr
 
-add_expr ::= expr (MINUS|PLUS|PIPE|CONCAT|IN) expr
+add_expr ::= expr (MINUS|PLUS|PIPE|CONCAT|IN) EOL? expr
 
-equality_expr ::= expr (COMPARE|EQUAL|NOT_EQUAL|LESS|GREATER|LESS_EQUAL|GREATER_EQUAL) expr
+equality_expr ::= expr (COMPARE|EQUAL|NOT_EQUAL|LESS|GREATER|LESS_EQUAL|GREATER_EQUAL) EOL? expr
 
-boolean_expr ::= expr (BOOLEAN_AND|BOOLEAN_OR|BOOLEAN_XOR|BOOLEAN_GREATER_THAN|BOOLEAN_LESS_THAN) expr
+boolean_expr ::= expr (BOOLEAN_AND|BOOLEAN_OR|BOOLEAN_XOR|BOOLEAN_GREATER_THAN|BOOLEAN_LESS_THAN) EOL? expr
 
-tuple_expr ::= OPEN_PAREN expressions CLOSE_PAREN
+tuple_expr ::= OPEN_PAREN expressions EOL? CLOSE_PAREN
 list_access_expr ::= expr OPEN_BRACKET
 		(expr? COLON COMMA? expr? COLON expr? | expr? COLON COMMA? expr? | expr?)
 		CLOSE_BRACKET
-dictionary_expr ::= OPEN_BRACE (dictionary_entry (COMMA dictionary_entry)*)? CLOSE_BRACE
+dictionary_expr ::= OPEN_BRACE EOL? (dictionary_entry (COMMA EOL? dictionary_entry)*)? EOL? CLOSE_BRACE
 dictionary_entry ::=expr? COLON expr?
 ternary_expr ::= expr QUESTION expr COLON expr
-list_expr ::= OPEN_BRACKET expr (COMMA expr)* CLOSE_BRACKET
+list_expr ::= OPEN_BRACKET EOL? expr (COMMA EOL? expr)* EOL? CLOSE_BRACKET
 
 fake member_expr ::= expr? DOT IDENTIFIER
 simple_member_expr ::= IDENTIFIER {extends=member_expr elementType=member_expr}
@@ -121,5 +121,5 @@ primary_expr::=
 
 any_number ::= (NUMBER|HEX_NUMBER|BINARY_NUMBER)
 
-function_call_expr ::= IDENTIFIER OPEN_PAREN (function_call_param (COMMA function_call_param)*)? CLOSE_PAREN
+function_call_expr ::= IDENTIFIER OPEN_PAREN EOL? (function_call_param (COMMA EOL? function_call_param)*)? EOL? CLOSE_PAREN
 function_call_param::=expr
